@@ -1,313 +1,696 @@
-"use client"
- 
-import { useState, useMemo } from "react"
- 
-/*
-══════════════════════════════════════════════════════════════════
-  LÓGICA DE LA CALCULADORA ORIPLAST
-══════════════════════════════════════════════════════════════════
- 
-  1. PRODUCTOS: Cada conjunto (CJA) tiene un precio fijo en USD 
-     que incluye todas las piezas (asiento, encosto, sapatas, 
-     ponteiras, tampo con travessa, porta livros).
- 
-  2. COLORES: Cada modelo tiene un color asignado por edad/nivel:
-     - CJA01 Maternal → Naranja (Laranja)
-     - CJA03 Infantil → Amarillo (Amarelo)
-     - CJA04 Juvenil  → Rojo (Vermelho)
-     - CJA05 Adulto   → Verde (Bandeira)
-     - CJA06 Adulto   → Azul
-     - CP01 Profesor   → Gris (Cinza)
- 
-  3. PIEZAS SUELTAS: También se cotizan individualmente
-     para reposición o pedidos especiales.
- 
-  4. CÁLCULO:
-     - Precio base en USD (tabla de fábrica)
-     - Conversión a PYG (principal), USD y BRL
-     - Descuento por volumen automático:
-       +200 = 3%  |  +500 = 5%  |  +1000 = 7%
-       +2000 = 10%  |  +5000 = 15%
-     - IVA configurable (default 10%)
-     - Tolerancia: ±5% en cantidad de producción
- 
-  5. CONDICIONES:
-     - Pago: 100% antes de entrega
-     - Precio: FCA (fábrica)
-     - Plazo: 60 días después del anticipo
-══════════════════════════════════════════════════════════════════
-*/
- 
-const DEFAULT_RATES = { USD_PYG: 6475, USD_BRL: 5.25 }
- 
-const COLORS = [
-  { id: "laranja",  name: "Naranja",  hex: "#E67E22", modelo: "CJA01" },
-  { id: "amarelo",  name: "Amarillo", hex: "#F1C40F", modelo: "CJA03" },
-  { id: "vermelho", name: "Rojo",     hex: "#E74C3C", modelo: "CJA04" },
-  { id: "verde",    name: "Verde",    hex: "#27AE60", modelo: "CJA05" },
-  { id: "azul",     name: "Azul",     hex: "#2E86C1", modelo: "CJA06" },
-  { id: "cinza",    name: "Gris",     hex: "#95A5A6", modelo: "CP01"  },
-]
- 
+"use client";
+
+import { useMemo, useState } from "react";
+
+type ColorKey =
+  | "naranja"
+  | "amarillo"
+  | "rojo"
+  | "verde"
+  | "azul"
+  | "gris";
+
+type ProductKind = "set" | "piece";
+
 type Product = {
-  id: string; name: string; category: "conjunto" | "pieza"
-  priceUsd: number; unit: string; minQty: number
-  colorId: string | null; desc: string
+  sku: string;
+  name: string;
+  kind: ProductKind;
+  priceUsd: number;
+  fixedColor?: ColorKey;
+  selectableColors?: ColorKey[];
+};
+
+type CartItem = {
+  qty: number;
+  color?: ColorKey;
+};
+
+const COLORS: Record<
+  ColorKey,
+  { label: string; hex: string; textClass: string; bgSoft: string }
+> = {
+  naranja: {
+    label: "Naranja",
+    hex: "#f97316",
+    textClass: "text-orange-600",
+    bgSoft: "bg-orange-100",
+  },
+  amarillo: {
+    label: "Amarillo",
+    hex: "#eab308",
+    textClass: "text-yellow-600",
+    bgSoft: "bg-yellow-100",
+  },
+  rojo: {
+    label: "Rojo",
+    hex: "#ef4444",
+    textClass: "text-red-600",
+    bgSoft: "bg-red-100",
+  },
+  verde: {
+    label: "Verde",
+    hex: "#22c55e",
+    textClass: "text-green-600",
+    bgSoft: "bg-green-100",
+  },
+  azul: {
+    label: "Azul",
+    hex: "#3b82f6",
+    textClass: "text-blue-600",
+    bgSoft: "bg-blue-100",
+  },
+  gris: {
+    label: "Gris",
+    hex: "#6b7280",
+    textClass: "text-gray-600",
+    bgSoft: "bg-gray-100",
+  },
+};
+
+const GENERIC_COLORS: ColorKey[] = [
+  "naranja",
+  "amarillo",
+  "rojo",
+  "verde",
+  "azul",
+  "gris",
+];
+
+const PRODUCTS: Product[] = [
+  // Conjuntos completos
+  {
+    sku: "CJA01",
+    name: "Conjunto Completo CJA01 Maternal",
+    kind: "set",
+    priceUsd: 14.75,
+    fixedColor: "naranja",
+  },
+  {
+    sku: "CJA03",
+    name: "Conjunto Completo CJA03 Infantil",
+    kind: "set",
+    priceUsd: 17.44,
+    fixedColor: "amarillo",
+  },
+  {
+    sku: "CJA04",
+    name: "Conjunto Completo CJA04 Juvenil",
+    kind: "set",
+    priceUsd: 17.57,
+    fixedColor: "rojo",
+  },
+  {
+    sku: "CJA06",
+    name: "Conjunto Completo CJA06 Adulto",
+    kind: "set",
+    priceUsd: 17.6,
+    fixedColor: "azul",
+  },
+
+  // Piezas sueltas
+  {
+    sku: "ASIENTO-06",
+    name: "Asiento 06",
+    kind: "piece",
+    priceUsd: 2.21,
+    selectableColors: GENERIC_COLORS,
+  },
+  {
+    sku: "ASIENTO-04",
+    name: "Asiento 04",
+    kind: "piece",
+    priceUsd: 2.18,
+    selectableColors: GENERIC_COLORS,
+  },
+  {
+    sku: "ASIENTO-03",
+    name: "Asiento 03",
+    kind: "piece",
+    priceUsd: 2.05,
+    selectableColors: GENERIC_COLORS,
+  },
+  {
+    sku: "ASIENTO-01",
+    name: "Asiento 01",
+    kind: "piece",
+    priceUsd: 1.23,
+    selectableColors: GENERIC_COLORS,
+  },
+  {
+    sku: "PORTA-LIVROS",
+    name: "Porta Livros",
+    kind: "piece",
+    priceUsd: 1.31,
+    selectableColors: GENERIC_COLORS,
+  },
+  {
+    sku: "ENCOSTO",
+    name: "Encosto",
+    kind: "piece",
+    priceUsd: 1.79,
+    selectableColors: GENERIC_COLORS,
+  },
+  {
+    sku: "PONTEIRA-A",
+    name: "Ponteira A",
+    kind: "piece",
+    priceUsd: 0.07,
+    selectableColors: GENERIC_COLORS,
+  },
+  {
+    sku: "PONTEIRA-B",
+    name: "Ponteira B",
+    kind: "piece",
+    priceUsd: 0.05,
+    selectableColors: GENERIC_COLORS,
+  },
+  {
+    sku: "SAPATA-A",
+    name: "Sapata A",
+    kind: "piece",
+    priceUsd: 0.33,
+    selectableColors: GENERIC_COLORS,
+  },
+  {
+    sku: "SAPATA-B",
+    name: "Sapata B",
+    kind: "piece",
+    priceUsd: 0.18,
+    selectableColors: GENERIC_COLORS,
+  },
+  {
+    sku: "TAMPO-TRAVESSA",
+    name: "Tampo con Travessa",
+    kind: "piece",
+    priceUsd: 10.93,
+    selectableColors: GENERIC_COLORS,
+  },
+];
+
+// Tramos ejemplo. Ajusta esto a tu política comercial real.
+// En este ejemplo el descuento se calcula sobre TOTAL DE UNIDADES del carrito.
+const DISCOUNT_TIERS = [
+  { minQty: 10, pct: 0.03 },
+  { minQty: 25, pct: 0.05 },
+  { minQty: 50, pct: 0.08 },
+  { minQty: 100, pct: 0.12 },
+  { minQty: 200, pct: 0.15 },
+];
+
+function round2(value: number) {
+  return Math.round(value * 100) / 100;
 }
- 
-const CATALOG: Product[] = [
-  { id: "cja01", name: "CJA01 Educ. Inicial (Maternal)", category: "conjunto", priceUsd: 14.75, unit: "conj", minQty: 40, colorId: "laranja", desc: "Conjunto maternal completo: asiento + encosto + tampo con travessa + porta livros + sapatas + ponteiras" },
-  { id: "cja03", name: "CJA03 EEB 2\u00b0 Ciclo (Infantil)", category: "conjunto", priceUsd: 17.44, unit: "conj", minQty: 30, colorId: "amarelo", desc: "Conjunto infantil 2\u00b0 ciclo completo con todos los componentes" },
-  { id: "cja04", name: "CJA04 EEB 3\u00b0 Ciclo (Juvenil)", category: "conjunto", priceUsd: 17.57, unit: "conj", minQty: 30, colorId: "vermelho", desc: "Conjunto juvenil 3\u00b0 ciclo completo con todos los componentes" },
-  { id: "cja06", name: "CJA06 EEB 3\u00b0 Ciclo (Adulto)", category: "conjunto", priceUsd: 17.60, unit: "conj", minQty: 30, colorId: "azul", desc: "Conjunto adulto 3\u00b0 ciclo completo con todos los componentes" },
-  { id: "asiento-06", name: "Asiento 06 Cinza", category: "pieza", priceUsd: 2.21, unit: "pza", minQty: 100, colorId: "cinza", desc: "Asiento pl\u00e1stico inyectado gris" },
-  { id: "asiento-04", name: "Asiento 04 Vermelho", category: "pieza", priceUsd: 2.18, unit: "pza", minQty: 100, colorId: "vermelho", desc: "Asiento pl\u00e1stico inyectado rojo" },
-  { id: "asiento-03", name: "Asiento 03 Amarelo", category: "pieza", priceUsd: 2.05, unit: "pza", minQty: 100, colorId: "amarelo", desc: "Asiento pl\u00e1stico inyectado amarillo" },
-  { id: "asiento-01", name: "Asiento 01 Laranja", category: "pieza", priceUsd: 1.23, unit: "pza", minQty: 100, colorId: "laranja", desc: "Asiento pl\u00e1stico inyectado naranja" },
-  { id: "porta-livros", name: "Porta Livros Cinza", category: "pieza", priceUsd: 1.31, unit: "pza", minQty: 100, colorId: "cinza", desc: "Porta libros pl\u00e1stico gris para pupitre" },
-  { id: "encosto", name: "Encosto 06/04/03", category: "pieza", priceUsd: 1.79, unit: "pza", minQty: 100, colorId: null, desc: "Respaldo pl\u00e1stico, compatible con modelos 06, 04 y 03" },
-  { id: "encosto-01", name: "Encosto 01 (20,70)", category: "pieza", priceUsd: 1.23, unit: "pza", minQty: 100, colorId: "laranja", desc: "Respaldo pl\u00e1stico maternal naranja" },
-  { id: "ponteira-sup", name: "Ponteira Superior", category: "pieza", priceUsd: 0.07, unit: "pza", minQty: 500, colorId: null, desc: "Regat\u00f3n superior del pupitre" },
-  { id: "ponteira-pino", name: "Ponteira con Pino", category: "pieza", priceUsd: 0.05, unit: "pza", minQty: 500, colorId: null, desc: "Regat\u00f3n con pino de la silla" },
-  { id: "sapata-frontal", name: "Sapata Frontal", category: "pieza", priceUsd: 0.33, unit: "pza", minQty: 200, colorId: null, desc: "Zapata anterior del pupitre" },
-  { id: "sapata-post", name: "Sapata Posterior", category: "pieza", priceUsd: 0.18, unit: "pza", minQty: 200, colorId: null, desc: "Zapata posterior del pupitre" },
-  { id: "tampo", name: "Tampo con Travessa", category: "pieza", priceUsd: 10.93, unit: "pza", minQty: 40, colorId: null, desc: "Tapa de mesa con travesa\u00f1o PP texturizado" },
-]
- 
-type CartItem = { uid: string; product: Product; qty: number; color: string }
-type Currency = "PYG" | "USD" | "BRL"
- 
-function convert(usd: number, c: Currency, r: typeof DEFAULT_RATES): number {
-  if (c === "PYG") return usd * r.USD_PYG; if (c === "BRL") return usd * r.USD_BRL; return usd
-}
-function fmt(usd: number, c: Currency, r: typeof DEFAULT_RATES): string {
-  const v = convert(usd, c, r)
-  if (c === "PYG") return "\u20b2 " + Math.round(v).toLocaleString("es-PY")
-  if (c === "BRL") return "R$ " + v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-  return "$ " + v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-}
-function disc(qty: number): number {
-  if (qty >= 5000) return 15; if (qty >= 2000) return 10; if (qty >= 1000) return 7; if (qty >= 500) return 5; if (qty >= 200) return 3; return 0
-}
- 
-export default function CalculadoraPage() {
-  const [cur, setCur] = useState<Currency>("PYG")
-  const [rates, setRates] = useState(DEFAULT_RATES)
-  const [cart, setCart] = useState<CartItem[]>([])
-  const [selCat, setSelCat] = useState<"" | "conjunto" | "pieza">("")
-  const [selProd, setSelProd] = useState("")
-  const [selColor, setSelColor] = useState("")
-  const [selQty, setSelQty] = useState(100)
-  const [iva, setIva] = useState(10)
-  const [uid, setUid] = useState(1)
- 
-  const filtered = selCat ? CATALOG.filter(p => p.category === selCat) : CATALOG
-  const cp = CATALOG.find(p => p.id === selProd)
-  const fc = cp?.colorId
-  const activeColor = fc || selColor
-  const canAdd = cp && (fc || selColor || cp.colorId !== null)
- 
-  const addItem = () => {
-    if (!cp) return
-    const color = activeColor || "cinza"
-    setCart(prev => [...prev, { uid: `i${uid}`, product: cp, qty: Math.max(cp.minQty, selQty), color }])
-    setUid(n => n + 1); setSelProd(""); setSelColor(""); setSelQty(100)
+
+function getDiscountPct(totalUnits: number) {
+  let pct = 0;
+  for (const tier of DISCOUNT_TIERS) {
+    if (totalUnits >= tier.minQty) pct = tier.pct;
   }
- 
+  return pct;
+}
+
+function formatUsd(value: number) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  }).format(value);
+}
+
+function formatBrl(value: number) {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 2,
+  }).format(value);
+}
+
+function formatPyg(value: number) {
+  return new Intl.NumberFormat("es-PY", {
+    style: "currency",
+    currency: "PYG",
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
+export default function OriplastQuoteBuilder() {
+  const [usdToPyg, setUsdToPyg] = useState<number>(6475);
+  const [usdToBrl, setUsdToBrl] = useState<number>(5.0);
+  const [ivaPct, setIvaPct] = useState<number>(10);
+  const [includeIva, setIncludeIva] = useState<boolean>(true);
+
+  const [cart, setCart] = useState<Record<string, CartItem>>(() => {
+    const initial: Record<string, CartItem> = {};
+    for (const p of PRODUCTS) {
+      initial[p.sku] = {
+        qty: 0,
+        color: p.fixedColor ?? p.selectableColors?.[0],
+      };
+    }
+    return initial;
+  });
+
+  function updateQty(sku: string, qty: number) {
+    setCart((prev) => ({
+      ...prev,
+      [sku]: {
+        ...prev[sku],
+        qty: Math.max(0, Math.floor(Number.isFinite(qty) ? qty : 0)),
+      },
+    }));
+  }
+
+  function updateColor(sku: string, color: ColorKey) {
+    setCart((prev) => ({
+      ...prev,
+      [sku]: {
+        ...prev[sku],
+        color,
+      },
+    }));
+  }
+
+  const selectedLines = useMemo(() => {
+    return PRODUCTS.map((product) => {
+      const line = cart[product.sku];
+      const qty = line?.qty ?? 0;
+      const color = product.fixedColor ?? line?.color;
+      const grossUsd = round2(product.priceUsd * qty);
+
+      return {
+        ...product,
+        qty,
+        color,
+        grossUsd,
+      };
+    }).filter((line) => line.qty > 0);
+  }, [cart]);
+
   const totals = useMemo(() => {
-    let sub = 0
-    const lines = cart.map(item => {
-      const gross = item.product.priceUsd * item.qty
-      const d = disc(item.qty); const net = gross * (1 - d / 100)
-      sub += net; return { ...item, gross, d, net }
-    })
-    const iv = sub * (iva / 100); return { lines, sub, iv, total: sub + iv }
-  }, [cart, iva])
- 
-  const colObj = (id: string) => COLORS.find(c => c.id === id)
- 
-  const S = { bg: "#060a13", sf: "#0c1221", sf2: "#111827", bd: "#1c2740", ac: "#10b981", t1: "#e2e8f0", t2: "#8892a8", t3: "#4a5568" }
- 
+    const totalUnits = selectedLines.reduce((acc, item) => acc + item.qty, 0);
+    const grossUsd = round2(
+      selectedLines.reduce((acc, item) => acc + item.grossUsd, 0)
+    );
+
+    const discountPct = getDiscountPct(totalUnits);
+    const discountUsd = round2(grossUsd * discountPct);
+    const subtotalUsd = round2(grossUsd - discountUsd);
+    const ivaUsd = includeIva ? round2(subtotalUsd * (ivaPct / 100)) : 0;
+    const totalUsd = round2(subtotalUsd + ivaUsd);
+
+    return {
+      totalUnits,
+      grossUsd,
+      discountPct,
+      discountUsd,
+      subtotalUsd,
+      ivaUsd,
+      totalUsd,
+      grossBrl: round2(grossUsd * usdToBrl),
+      discountBrl: round2(discountUsd * usdToBrl),
+      subtotalBrl: round2(subtotalUsd * usdToBrl),
+      ivaBrl: round2(ivaUsd * usdToBrl),
+      totalBrl: round2(totalUsd * usdToBrl),
+      grossPyg: Math.round(grossUsd * usdToPyg),
+      discountPyg: Math.round(discountUsd * usdToPyg),
+      subtotalPyg: Math.round(subtotalUsd * usdToPyg),
+      ivaPyg: Math.round(ivaUsd * usdToPyg),
+      totalPyg: Math.round(totalUsd * usdToPyg),
+    };
+  }, [selectedLines, includeIva, ivaPct, usdToPyg, usdToBrl]);
+
+  const whatsappText = useMemo(() => {
+    if (selectedLines.length === 0) {
+      return encodeURIComponent(
+        "Hola OriplastPy, quiero cotizar piezas plásticas inyectadas para Paraguay."
+      );
+    }
+
+    const lines = selectedLines
+      .map((item) => {
+        const colorText = item.color
+          ? ` | Color: ${COLORS[item.color].label}`
+          : "";
+        return `- ${item.name} (${item.sku}) x ${item.qty}${colorText} = ${formatUsd(
+          item.grossUsd
+        )}`;
+      })
+      .join("\n");
+
+    const text = `Hola OriplastPy, solicito esta cotización:
+
+${lines}
+
+Resumen:
+- Unidades totales: ${totals.totalUnits}
+- Bruto: ${formatUsd(totals.grossUsd)}
+- Descuento: ${(totals.discountPct * 100).toFixed(0)}%
+- Subtotal: ${formatUsd(totals.subtotalUsd)}
+- IVA: ${includeIva ? `${ivaPct}%` : "No aplicado"}
+- Total USD: ${formatUsd(totals.totalUsd)}
+- Total BRL: ${formatBrl(totals.totalBrl)}
+- Total PYG: ${formatPyg(totals.totalPyg)}
+
+Tipo de cambio:
+1 USD = ${formatPyg(usdToPyg)}
+1 USD = ${formatBrl(usdToBrl)}
+
+Favor confirmar disponibilidad y plazo de entrega para Paraguay.`;
+
+    return encodeURIComponent(text);
+  }, [selectedLines, totals, includeIva, ivaPct, usdToPyg, usdToBrl]);
+
   return (
-    <div style={{ minHeight: "100vh", background: S.bg, color: S.t1, fontFamily: "-apple-system, 'Segoe UI', sans-serif" }}>
-      <header style={{ padding: "14px 16px", borderBottom: `1px solid ${S.bd}`, background: S.sf, position: "sticky", top: 0, zIndex: 50 }}>
-        <div style={{ maxWidth: 720, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ width: 36, height: 36, borderRadius: 8, background: `linear-gradient(135deg, ${S.ac}, #0ea5e9)`, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 14, color: S.bg }}>OP</div>
+    <main className="min-h-screen bg-zinc-50 text-zinc-900">
+      <section className="mx-auto max-w-7xl px-4 py-8 md:px-6">
+        <div className="mb-8 rounded-3xl bg-white p-6 shadow-sm ring-1 ring-zinc-200">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <div style={{ fontWeight: 700, fontSize: 16 }}>Ori<span style={{ color: S.ac }}>plast</span></div>
-              <div style={{ fontSize: 10, color: S.t3, letterSpacing: 1.5, fontFamily: "monospace" }}>CALCULADORA B2B</div>
+              <p className="mb-2 inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
+                Representación exclusiva Paraguay
+              </p>
+              <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+                Cotizador B2B · OriplastPy
+              </h1>
+              <p className="mt-3 max-w-3xl text-sm text-zinc-600 md:text-base">
+                Piezas plásticas inyectadas con lógica comercial real: precio
+                base en USD, descuento automático por volumen, IVA configurable
+                y total destacado en guaraníes.
+              </p>
             </div>
-          </div>
-          <div style={{ display: "flex", gap: 4, background: S.sf2, padding: 3, borderRadius: 8 }}>
-            {(["PYG", "USD", "BRL"] as Currency[]).map(c => (
-              <button key={c} onClick={() => setCur(c)} style={{ padding: "6px 12px", borderRadius: 6, border: "none", background: cur === c ? S.sf : "transparent", color: cur === c ? (c === "PYG" ? "#f472b6" : c === "USD" ? "#4ade80" : "#fbbf24") : S.t3, fontWeight: 600, fontSize: 12, cursor: "pointer", fontFamily: "monospace", boxShadow: cur === c ? "0 2px 8px rgba(0,0,0,0.3)" : "none" }}>{c}</button>
-            ))}
-          </div>
-        </div>
-      </header>
- 
-      <main style={{ maxWidth: 720, margin: "0 auto", padding: "16px" }}>
-        {/* Rates */}
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center", padding: "10px 14px", background: S.sf, borderRadius: 10, border: `1px solid ${S.bd}`, marginBottom: 16, fontSize: 12 }}>
-          <span style={{ color: S.t3 }}>TC:</span>
-          <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-            <span style={{ color: S.t2 }}>1$=</span>
-            <input type="number" value={rates.USD_PYG} onChange={e => setRates(r => ({ ...r, USD_PYG: +e.target.value || 0 }))} style={{ ...mi, width: 65 }} />
-            <span style={{ color: "#f472b6", fontWeight: 600 }}>\u20b2</span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-            <span style={{ color: S.t2 }}>1$=</span>
-            <input type="number" step="0.01" value={rates.USD_BRL} onChange={e => setRates(r => ({ ...r, USD_BRL: +e.target.value || 0 }))} style={{ ...mi, width: 55 }} />
-            <span style={{ color: "#fbbf24", fontWeight: 600 }}>R$</span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 4, marginLeft: "auto" }}>
-            <span style={{ color: S.t2 }}>IVA:</span>
-            <input type="number" value={iva} onChange={e => setIva(+e.target.value || 0)} style={{ ...mi, width: 40 }} />
-            <span style={{ color: S.t2 }}>%</span>
+
+            <a
+              href={`https://wa.me/595982451828?text=${whatsappText}`}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center rounded-2xl bg-green-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-green-700"
+            >
+              Enviar cotización por WhatsApp
+            </a>
           </div>
         </div>
- 
-        {/* Add Product */}
-        <div style={{ padding: 16, background: S.sf, borderRadius: 12, border: `1px solid ${S.bd}`, marginBottom: 16 }}>
-          <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 14, color: S.ac }}>+ Agregar producto</div>
-          <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
-            {([{ v: "" as const, l: "Todos" }, { v: "conjunto" as const, l: "\ud83d\udce6 Conjuntos" }, { v: "pieza" as const, l: "\ud83d\udd27 Piezas" }]).map(t => (
-              <button key={t.v} onClick={() => { setSelCat(t.v); setSelProd("") }} style={{ padding: "6px 14px", borderRadius: 20, border: `1px solid ${selCat === t.v ? S.ac + "66" : S.bd}`, background: selCat === t.v ? S.ac + "15" : "transparent", color: selCat === t.v ? S.ac : S.t2, fontSize: 12, fontWeight: 500, cursor: "pointer" }}>{t.l}</button>
-            ))}
+
+        <div className="mb-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <ConfigCard
+            label="Tipo de cambio USD → PYG"
+            value={usdToPyg}
+            step={1}
+            onChange={setUsdToPyg}
+          />
+          <ConfigCard
+            label="Tipo de cambio USD → BRL"
+            value={usdToBrl}
+            step={0.01}
+            onChange={setUsdToBrl}
+          />
+          <ConfigCard
+            label="IVA (%)"
+            value={ivaPct}
+            step={1}
+            onChange={setIvaPct}
+          />
+
+          <div className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-zinc-200">
+            <p className="text-sm font-semibold text-zinc-700">Aplicar IVA</p>
+            <label className="mt-4 flex cursor-pointer items-center gap-3">
+              <input
+                type="checkbox"
+                checked={includeIva}
+                onChange={(e) => setIncludeIva(e.target.checked)}
+                className="h-5 w-5 rounded border-zinc-300"
+              />
+              <span className="text-sm text-zinc-600">
+                {includeIva ? "Sí, incluir IVA en el total" : "No incluir IVA"}
+              </span>
+            </label>
           </div>
-          <select value={selProd} onChange={e => { setSelProd(e.target.value); setSelColor("") }} style={{ ...ii, background: S.sf2, marginBottom: 12 }}>
-            <option value="">Seleccionar producto...</option>
-            {filtered.map(p => (<option key={p.id} value={p.id}>{p.category === "conjunto" ? "\ud83d\udce6" : "\ud83d\udd27"} {p.name} \u2014 {fmt(p.priceUsd, cur, rates)}/{p.unit}</option>))}
-          </select>
- 
-          {cp && (
-            <>
-              <div style={{ fontSize: 12, color: S.t2, marginBottom: 12, padding: "8px 10px", background: S.sf2, borderRadius: 8 }}>
-                {cp.desc}
-                <span style={{ display: "block", marginTop: 4, color: S.t3, fontSize: 11 }}>M\u00ednimo: {cp.minQty} {cp.unit}</span>
-              </div>
- 
-              {/* Color */}
-              <div style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 11, fontWeight: 600, color: S.t3, marginBottom: 6, fontFamily: "monospace", letterSpacing: 1, textTransform: "uppercase" }}>Color</div>
-                {fc ? (
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <div style={{ width: 32, height: 32, borderRadius: 8, background: colObj(fc)?.hex, border: `2px solid ${S.ac}`, boxShadow: `0 0 0 2px ${S.ac}44` }} />
-                    <span style={{ fontSize: 13 }}>{colObj(fc)?.name}</span>
-                    <span style={{ fontSize: 11, color: S.t3 }}>(fijo)</span>
-                  </div>
-                ) : (
-                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                    {COLORS.map(c => (
-                      <button key={c.id} onClick={() => setSelColor(c.id)} style={{ width: 36, height: 36, borderRadius: 8, background: c.hex, border: `2px solid ${selColor === c.id ? S.ac : "transparent"}`, boxShadow: selColor === c.id ? `0 0 0 2px ${S.ac}66` : "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 14, fontWeight: 700 }}>{selColor === c.id ? "\u2713" : ""}</button>
-                    ))}
-                    {selColor && <span style={{ fontSize: 12, color: S.ac, alignSelf: "center" }}>{colObj(selColor)?.name}</span>}
-                  </div>
-                )}
-              </div>
- 
-              {/* Qty + Preview + Add */}
-              <div style={{ display: "flex", gap: 10, alignItems: "end", flexWrap: "wrap" }}>
-                <div style={{ flex: "1 1 100px" }}>
-                  <div style={{ fontSize: 11, fontWeight: 600, color: S.t3, marginBottom: 6, fontFamily: "monospace" }}>CANTIDAD</div>
-                  <input type="number" value={selQty} min={1} onChange={e => setSelQty(+e.target.value || 1)} style={{ ...ii, background: S.sf2 }} />
-                </div>
-                <div style={{ flex: "1 1 100px", textAlign: "right" }}>
-                  <div style={{ fontSize: 11, color: S.t3, marginBottom: 4 }}>Estimado</div>
-                  <div style={{ fontFamily: "monospace", fontSize: 18, fontWeight: 700, color: S.ac }}>{fmt(cp.priceUsd * Math.max(cp.minQty, selQty), cur, rates)}</div>
-                  {disc(selQty) > 0 && <div style={{ fontSize: 11, color: "#4ade80" }}>-{disc(selQty)}% volumen</div>}
-                </div>
-                <button onClick={addItem} disabled={!canAdd} style={{ padding: "10px 20px", borderRadius: 8, border: "none", background: canAdd ? S.ac : S.bd, color: canAdd ? S.bg : S.t3, fontWeight: 700, fontSize: 14, cursor: canAdd ? "pointer" : "default", height: 42 }}>+ Agregar</button>
-              </div>
-              <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 12 }}>
-                {[{ q: 200, d: 3 }, { q: 500, d: 5 }, { q: 1000, d: 7 }, { q: 2000, d: 10 }, { q: 5000, d: 15 }].map(t => (
-                  <span key={t.q} style={{ padding: "3px 8px", borderRadius: 12, fontSize: 10, fontFamily: "monospace", background: selQty >= t.q ? S.ac + "18" : S.sf2, color: selQty >= t.q ? S.ac : S.t3, border: `1px solid ${selQty >= t.q ? S.ac + "44" : S.bd}` }}>+{t.q}: -{t.d}%</span>
-                ))}
-              </div>
-            </>
-          )}
         </div>
- 
-        {/* Cart */}
-        <div style={{ background: S.sf, borderRadius: 12, border: `1px solid ${S.bd}`, overflow: "hidden" }}>
-          <div style={{ padding: "12px 16px", borderBottom: `1px solid ${S.bd}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <span style={{ fontSize: 13, fontWeight: 600 }}>\ud83d\udccb Pedido ({cart.length})</span>
-            {cart.length > 0 && <button onClick={() => setCart([])} style={{ padding: "4px 10px", borderRadius: 6, border: "1px solid #ef444444", background: "transparent", color: "#ef4444", fontSize: 11, cursor: "pointer" }}>Limpiar</button>}
-          </div>
- 
-          {cart.length === 0 ? (
-            <div style={{ padding: "40px 16px", textAlign: "center", color: S.t3 }}>
-              <div style={{ fontSize: 32, marginBottom: 8, opacity: 0.3 }}>\ud83d\udce6</div>
-              <div style={{ fontSize: 13 }}>Agreg\u00e1 productos para cotizar</div>
+
+        <div className="grid gap-8 xl:grid-cols-[1.4fr_0.9fr]">
+          <div>
+            <div className="mb-4">
+              <h2 className="text-xl font-bold">Productos</h2>
+              <p className="text-sm text-zinc-600">
+                Los conjuntos tienen color fijo por modelo. Las piezas sueltas
+                permiten selección entre 6 colores.
+              </p>
             </div>
-          ) : (
-            <div>
-              {totals.lines.map(item => {
-                const col = colObj(item.color)
+
+            <div className="grid gap-4 md:grid-cols-2">
+              {PRODUCTS.map((product) => {
+                const current = cart[product.sku];
+                const currentColor = product.fixedColor ?? current?.color;
+
                 return (
-                  <div key={item.uid} style={{ padding: "12px 16px", borderBottom: `1px solid ${S.bd}`, display: "flex", gap: 10, alignItems: "center" }}>
-                    <div style={{ width: 10, height: 10, borderRadius: "50%", flexShrink: 0, background: col?.hex || S.t3 }} />
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 13, fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.product.name}</div>
-                      <div style={{ fontSize: 11, color: S.t2 }}>{fmt(item.product.priceUsd, cur, rates)} \u00d7 {item.qty}{item.d > 0 && <span style={{ color: "#4ade80", marginLeft: 4 }}>(-{item.d}%)</span>}</div>
+                  <article
+                    key={product.sku}
+                    className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-zinc-200"
+                  >
+                    <div className="mb-3 flex items-start justify-between gap-3">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                          {product.sku}
+                        </p>
+                        <h3 className="text-lg font-bold leading-tight">
+                          {product.name}
+                        </h3>
+                      </div>
+
+                      <span className="rounded-full bg-zinc-100 px-3 py-1 text-xs font-semibold text-zinc-700">
+                        {product.kind === "set"
+                          ? "Conjunto"
+                          : "Pieza suelta"}
+                      </span>
                     </div>
-                    <div style={{ display: "flex", border: `1px solid ${S.bd}`, borderRadius: 6, overflow: "hidden" }}>
-                      <button onClick={() => setCart(c => c.map(i => i.uid === item.uid ? { ...i, qty: Math.max(1, i.qty - 10) } : i))} style={qb}>\u2212</button>
-                      <input type="number" value={item.qty} onChange={e => setCart(c => c.map(i => i.uid === item.uid ? { ...i, qty: Math.max(1, +e.target.value || 1) } : i))} style={{ width: 48, height: 30, border: "none", background: S.sf2, color: S.t1, textAlign: "center", fontFamily: "monospace", fontSize: 12 }} />
-                      <button onClick={() => setCart(c => c.map(i => i.uid === item.uid ? { ...i, qty: i.qty + 10 } : i))} style={qb}>+</button>
-                    </div>
-                    <div style={{ textAlign: "right", minWidth: 85 }}>
-                      <div style={{ fontFamily: "monospace", fontSize: 13, fontWeight: 700, color: S.ac }}>{fmt(item.net, cur, rates)}</div>
-                      {cur !== "USD" && <div style={{ fontFamily: "monospace", fontSize: 10, color: S.t3 }}>{fmt(item.net, "USD", rates)}</div>}
-                    </div>
-                    <button onClick={() => setCart(c => c.filter(i => i.uid !== item.uid))} style={{ width: 24, height: 24, borderRadius: 4, border: "none", background: "transparent", color: S.t3, cursor: "pointer", fontSize: 12, flexShrink: 0 }}>\u2715</button>
-                  </div>
-                )
-              })}
- 
-              {/* Totals */}
-              <div style={{ padding: 16, background: S.sf2 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                  <span style={{ fontSize: 12, color: S.t2 }}>Subtotal</span>
-                  <span style={{ fontFamily: "monospace", fontSize: 14, fontWeight: 600 }}>{fmt(totals.sub, cur, rates)}</span>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
-                  <span style={{ fontSize: 12, color: S.t2 }}>IVA ({iva}%)</span>
-                  <span style={{ fontFamily: "monospace", fontSize: 14 }}>{fmt(totals.iv, cur, rates)}</span>
-                </div>
-                <div style={{ borderTop: `1px solid ${S.bd}`, paddingTop: 12 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "end" }}>
-                    <span style={{ fontSize: 14, fontWeight: 700 }}>TOTAL</span>
-                    <div style={{ textAlign: "right" }}>
-                      <div style={{ fontFamily: "monospace", fontSize: 24, fontWeight: 800, color: S.ac }}>{fmt(totals.total, cur, rates)}</div>
-                      <div style={{ fontFamily: "monospace", fontSize: 11, color: S.t2, marginTop: 2 }}>
-                        {cur !== "PYG" && <span style={{ marginRight: 8 }}>{fmt(totals.total, "PYG", rates)}</span>}
-                        {cur !== "USD" && <span style={{ marginRight: 8 }}>{fmt(totals.total, "USD", rates)}</span>}
-                        {cur !== "BRL" && <span>{fmt(totals.total, "BRL", rates)}</span>}
+
+                    <p className="mb-4 text-2xl font-bold">{formatUsd(product.priceUsd)}</p>
+
+                    {product.fixedColor ? (
+                      <div className="mb-4 rounded-2xl border border-zinc-200 p-3">
+                        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                          Color fijo
+                        </p>
+                        <div className="flex items-center gap-3">
+                          <span
+                            className="h-5 w-5 rounded-full ring-2 ring-white"
+                            style={{ backgroundColor: COLORS[product.fixedColor].hex }}
+                          />
+                          <span className="text-sm font-medium text-zinc-700">
+                            {COLORS[product.fixedColor].label}
+                          </span>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="mb-4">
+                        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                          Selección de color
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {product.selectableColors?.map((color) => {
+                            const isActive = currentColor === color;
+                            return (
+                              <button
+                                key={color}
+                                type="button"
+                                onClick={() => updateColor(product.sku, color)}
+                                className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+                                  isActive
+                                    ? "border-zinc-900 bg-zinc-900 text-white"
+                                    : "border-zinc-300 bg-white text-zinc-700 hover:border-zinc-400"
+                                }`}
+                              >
+                                <span
+                                  className="h-3 w-3 rounded-full"
+                                  style={{ backgroundColor: COLORS[color].hex }}
+                                />
+                                {COLORS[color].label}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <label className="block">
+                        <span className="mb-1 block text-sm font-medium text-zinc-700">
+                          Cantidad
+                        </span>
+                        <input
+                          type="number"
+                          min={0}
+                          step={1}
+                          value={current?.qty ?? 0}
+                          onChange={(e) =>
+                            updateQty(product.sku, Number(e.target.value))
+                          }
+                          className="w-full rounded-2xl border border-zinc-300 px-4 py-3 outline-none ring-0 transition focus:border-zinc-900"
+                        />
+                      </label>
+
+                      <div className="block">
+                        <span className="mb-1 block text-sm font-medium text-zinc-700">
+                          Total línea
+                        </span>
+                        <div className="rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm font-semibold">
+                          {formatUsd(round2(product.priceUsd * (current?.qty ?? 0)))}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+
+          <aside className="h-fit rounded-3xl bg-white p-5 shadow-sm ring-1 ring-zinc-200 xl:sticky xl:top-6">
+            <h2 className="text-xl font-bold">Resumen comercial</h2>
+
+            <div className="mt-5 rounded-3xl bg-zinc-900 p-5 text-white">
+              <p className="text-xs uppercase tracking-[0.2em] text-zinc-400">
+                Total principal en guaraníes
+              </p>
+              <p className="mt-2 text-4xl font-extrabold tracking-tight">
+                {formatPyg(totals.totalPyg)}
+              </p>
+              <div className="mt-3 grid gap-1 text-sm text-zinc-300">
+                <p>Total USD: {formatUsd(totals.totalUsd)}</p>
+                <p>Total BRL: {formatBrl(totals.totalBrl)}</p>
               </div>
             </div>
-          )}
+
+            <div className="mt-5 space-y-3 text-sm">
+              <SummaryRow
+                label="Unidades totales"
+                value={String(totals.totalUnits)}
+              />
+              <SummaryRow
+                label="Bruto"
+                value={`${formatUsd(totals.grossUsd)} · ${formatPyg(
+                  totals.grossPyg
+                )}`}
+              />
+              <SummaryRow
+                label={`Descuento automático (${(totals.discountPct * 100).toFixed(
+                  0
+                )}%)`}
+                value={`-${formatUsd(totals.discountUsd)} · -${formatPyg(
+                  totals.discountPyg
+                )}`}
+              />
+              <SummaryRow
+                label="Subtotal"
+                value={`${formatUsd(totals.subtotalUsd)} · ${formatPyg(
+                  totals.subtotalPyg
+                )}`}
+              />
+              <SummaryRow
+                label={includeIva ? `IVA (${ivaPct}%)` : "IVA"}
+                value={
+                  includeIva
+                    ? `${formatUsd(totals.ivaUsd)} · ${formatPyg(totals.ivaPyg)}`
+                    : "No aplicado"
+                }
+              />
+            </div>
+
+            <div className="mt-6">
+              <h3 className="mb-3 text-sm font-bold uppercase tracking-wide text-zinc-500">
+                Tramos de descuento
+              </h3>
+              <div className="grid gap-2">
+                {DISCOUNT_TIERS.map((tier) => (
+                  <div
+                    key={tier.minQty}
+                    className="flex items-center justify-between rounded-2xl bg-zinc-50 px-4 py-3 text-sm"
+                  >
+                    <span>Desde {tier.minQty} unidades</span>
+                    <span className="font-bold">
+                      {(tier.pct * 100).toFixed(0)}%
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <h3 className="mb-3 text-sm font-bold uppercase tracking-wide text-zinc-500">
+                Ítems seleccionados
+              </h3>
+
+              {selectedLines.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-zinc-300 px-4 py-6 text-sm text-zinc-500">
+                  Todavía no agregaste productos al carrito.
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {selectedLines.map((item) => (
+                    <div
+                      key={item.sku}
+                      className="rounded-2xl border border-zinc-200 p-4"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+                            {item.sku}
+                          </p>
+                          <p className="font-semibold">{item.name}</p>
+                          <p className="mt-1 text-sm text-zinc-600">
+                            Cantidad: {item.qty}
+                            {item.color ? ` · Color: ${COLORS[item.color].label}` : ""}
+                          </p>
+                        </div>
+                        <p className="font-bold">{formatUsd(item.grossUsd)}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </aside>
         </div>
- 
-        {/* Conditions */}
-        <div style={{ marginTop: 16, padding: 14, background: S.sf, borderRadius: 10, border: `1px solid ${S.bd}`, fontSize: 11, color: S.t3, lineHeight: 1.8 }}>
-          <div style={{ fontWeight: 600, color: S.t2, marginBottom: 4 }}>Condiciones:</div>
-          <div>1. Pago: 100% antes de entrega</div>
-          <div>2. Precio: FCA (puesto en f\u00e1brica)</div>
-          <div>3. Plazo: 60 d\u00edas despu\u00e9s del anticipo</div>
-          <div>4. Tolerancia: \u00b15% en cantidad</div>
-          <div style={{ marginTop: 8 }}>TC: 1 USD = \u20b2 {rates.USD_PYG.toLocaleString()} | 1 USD = R$ {rates.USD_BRL}</div>
-        </div>
-      </main>
-    </div>
-  )
+      </section>
+    </main>
+  );
 }
- 
-const mi: React.CSSProperties = { padding: "3px 6px", background: "#0b0f19", border: "1px solid #1c2740", borderRadius: 5, color: "#e2e8f0", fontFamily: "monospace", fontSize: 12, textAlign: "center" }
-const ii: React.CSSProperties = { width: "100%", padding: "10px 12px", background: "#111827", border: "1px solid #1c2740", borderRadius: 8, color: "#e2e8f0", fontSize: 14, fontFamily: "inherit", outline: "none" }
-const qb: React.CSSProperties = { width: 30, height: 30, border: "none", background: "#1c2740", color: "#8892a8", cursor: "pointer", fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center" }
+
+function ConfigCard({
+  label,
+  value,
+  onChange,
+  step,
+}: {
+  label: string;
+  value: number;
+  onChange: (value: number) => void;
+  step: number;
+}) {
+  return (
+    <div className="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-zinc-200">
+      <p className="mb-2 text-sm font-semibold text-zinc-700">{label}</p>
+      <input
+        type="number"
+        step={step}
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="w-full rounded-2xl border border-zinc-300 px-4 py-3 outline-none transition focus:border-zinc-900"
+      />
+    </div>
+  );
+}
+
+function SummaryRow({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="flex items-start justify-between gap-4 rounded-2xl bg-zinc-50 px-4 py-3">
+      <span className="text-zinc-600">{label}</span>
+      <span className="text-right font-semibold text-zinc-900">{value}</span>
+    </div>
+  );
+}
