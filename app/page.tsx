@@ -1,9 +1,10 @@
 import Navbar from "@/components/Navbar"
 import Hero from "@/components/Hero"
 import ProductLines from "@/components/ProductLines"
-import SecondaryLines from "@/components/SecondaryLines"
+import SecondaryLines from "@/components/SecondaryLines" // <-- Agregaste esta línea
 import Footer from "@/components/Footer"
 import FloatingWhatsApp from "@/components/FloatingWhatsApp"
+
 
 export default function Home() {
   return (
