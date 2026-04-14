@@ -336,7 +336,7 @@ Favor confirmar disponibilidad, stock y plazo para Paraguay.`;
         <div className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-zinc-200">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <p className="mb-2 inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
+              <p className="mb-2 inline-flex rounded-full bg-lime-100/30 px-3 py-1 text-xs font-semibold text-lime-600">
                 OriplastPy · Cotizador desglosado
               </p>
               <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
@@ -353,7 +353,7 @@ Favor confirmar disponibilidad, stock y plazo para Paraguay.`;
               href={`https://wa.me/595982451828?text=${whatsappText}`}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center rounded-2xl bg-green-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-green-700"
+              className="inline-flex items-center justify-center rounded-2xl bg-lime-500 px-5 py-3 text-sm font-semibold text-slate-950 shadow-[0_0_20px_rgba(132,204,22,0.2)] transition hover:bg-lime-600"
             >
               Enviar cotización por WhatsApp
             </a>

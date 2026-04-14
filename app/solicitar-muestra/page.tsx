@@ -216,7 +216,7 @@ export default function SolicitudMuestraPage() {
                                 type="checkbox"
                                 checked={quantity > 0}
                                 onChange={(event) => handleCheckboxChange(item.id, event.target.checked)}
-                                className="h-4 w-4 rounded border-zinc-300 text-green-600 focus:ring-green-500"
+                                className="h-4 w-4 rounded border-zinc-300 text-lime-500 focus:ring-lime-500"
                               />
                             </div>
                             <div className="mt-4 flex items-center gap-3">
@@ -273,7 +273,7 @@ export default function SolicitudMuestraPage() {
                   disabled={!canSubmit}
                   className={`inline-flex w-full items-center justify-center rounded-3xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition ${
                     canSubmit
-                      ? "bg-green-600 hover:bg-green-700"
+                      ? "bg-lime-500 hover:bg-lime-600"
                       : "cursor-not-allowed bg-zinc-300 text-zinc-500"
                   }`}
                 >

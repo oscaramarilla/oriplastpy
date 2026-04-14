@@ -1,65 +1,46 @@
-import Link from 'next/link';
+import Link from 'next/link'
+
+const productos = [
+  { nombre: "Tampo con Travesaño", desc: "Mesada de alta resistencia para pupitres escolares." },
+  { nombre: "Asiento Nivel Inicial", desc: "Ergonomía certificada para los más pequeños." },
+  { nombre: "Asiento 1er Ciclo", desc: "Dimensiones estándar para educación escolar básica." },
+  { nombre: "Asiento 2do Ciclo", desc: "Resistencia superior para uso intensivo." },
+  { nombre: "Asiento 3er Ciclo", desc: "Formato ergonómico para jóvenes y adultos." },
+  { nombre: "Respaldo Nivel Inicial", desc: "Soporte lumbar adaptado a nivel inicial." },
+  { nombre: "Respaldo 1er al 3er Ciclo", desc: "Pieza universal inyectada en polipropileno." },
+  { nombre: "Porta Libros", desc: "Accesorio esencial para pupitres modulares." },
+  { nombre: "Puntera Superior", desc: "Terminación estética y de seguridad para caños." },
+  { nombre: "Puntera con Pino", desc: "Componente de ensamble estructural." },
+  { nombre: "Zapata Frontal", desc: "Base antideslizante de larga duración." },
+  { nombre: "Zapata Posterior", desc: "Protección reforzada contra el roce del piso." },
+]
 
 export default function ProductLines() {
-  // Los 12 componentes exactos cubiertos por la exclusividad de Metal Mad
-  const catalogue = [
-    { name: 'Tampo con Travesaño', category: 'Mesadas', desc: 'Superficie de alto impacto inyectada en polipropileno.' },
-    { name: 'Asiento Nivel Inicial', category: 'Asientos', desc: 'Ergonomía adaptada para preescolar. Lavable y resistente.' },
-    { name: 'Asiento 1er Ciclo', category: 'Asientos', desc: 'Tamaño estándar para primera etapa escolar.' },
-    { name: 'Asiento 2do Ciclo', category: 'Asientos', desc: 'Estructura reforzada para uso intensivo diario.' },
-    { name: 'Asiento 3er Ciclo', category: 'Asientos', desc: 'Dimensiones mayores para adolescentes.' },
-    { name: 'Respaldo Nivel Inicial', category: 'Respaldos', desc: 'Diseño anatómico para educación inicial.' },
-    { name: 'Respaldo 1er al 3er Ciclo', category: 'Respaldos', desc: 'Soporte lumbar inyectado, formato universal MEC.' },
-    { name: 'Porta Libros', category: 'Accesorios', desc: 'Rejilla plástica inferior para guardado de útiles.' },
-    { name: 'Puntera Superior', category: 'Accesorios / Terminaciones', desc: 'Cierre estético y seguro para estructuras de caño.' },
-    { name: 'Puntera con Pino', category: 'Accesorios / Terminaciones', desc: 'Conector de ensamble para pupitres modulares.' },
-    { name: 'Zapata Frontal', category: 'Accesorios / Terminaciones', desc: 'Apoyo antideslizante para la base de la estructura.' },
-    { name: 'Zapata Posterior', category: 'Accesorios / Terminaciones', desc: 'Protección para el roce constante contra el piso.' },
-  ];
-
   return (
-    <div className="py-16 bg-gray-50">
+    <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div className="text-center mb-10">
-          <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Catálogo de Componentes</h2>
-          <p className="mt-3 text-lg text-gray-500 max-w-2xl mx-auto">
-            Materia prima inyectada lista para ensamblaje. Ideal para metalúrgicas y licitaciones del MEC.
-          </p>
+        <div className="mb-12">
+          <h2 className="text-3xl font-black text-gray-900">Línea Escolar Homologada</h2>
+          <p className="text-gray-500 mt-2 font-medium">Insumos listos para su integración en fábrica.</p>
         </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {catalogue.map((item, index) => (
-            <div 
-              key={index} 
-              className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col justify-between hover:shadow-md transition-shadow"
-            >
-              <div>
-                <span className="text-xs font-bold text-blue-600 uppercase tracking-wider bg-blue-50 px-2 py-1 rounded-full">
-                  {item.category}
-                </span>
-                <h3 className="text-xl font-bold text-gray-900 mt-4 mb-2">{item.name}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed mb-6">
-                  {item.desc}
-                </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {productos.map((p, i) => (
+            <div key={i} className="group bg-gray-50 p-6 rounded-3xl border border-transparent hover:border-lime-100/50 hover:bg-white hover:shadow-2xl hover:shadow-lime-100/30 transition-all">
+              <div className="w-12 h-12 bg-lime-500 rounded-2xl flex items-center justify-center text-slate-950 font-bold mb-4 group-hover:scale-110 transition-transform">
+                {i + 1}
               </div>
-              
-              {/* Espacio reservado para futuras imágenes - gris por ahora para mantener el layout */}
-              <div className="w-full h-32 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-center mb-4">
-                <span className="text-gray-400 text-sm italic">Sin imagen asignada</span>
-              </div>
-              
+              <h3 className="text-lg font-bold text-gray-900 leading-tight">{p.nombre}</h3>
+              <p className="text-sm text-gray-500 mt-2 mb-6">{p.desc}</p>
               <Link 
                 href="/solicitar-muestra" 
-                className="w-full text-center bg-blue-600 text-white font-semibold py-3 px-4 rounded-xl hover:bg-blue-700 active:bg-blue-800 transition-colors"
+                className="text-sm font-bold text-lime-500 flex items-center gap-2 group-hover:gap-3 transition-all"
               >
-                Solicitar Muestra Física
+                Solicitar pieza <span>→</span>
               </Link>
             </div>
           ))}
         </div>
-
       </div>
-    </div>
-  );
+    </section>
+  )
 }

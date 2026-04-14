@@ -1,141 +1,52 @@
-"use client"
-
-import { FaFacebook, FaInstagram, FaWhatsapp, FaMapMarkerAlt } from "react-icons/fa"
-import { MdEmail } from "react-icons/md"
+import Link from 'next/link';
 
 export default function Footer() {
-
   return (
+    <footer className="bg-slate-900 text-white pt-12 pb-8 mt-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 border-b border-slate-700 pb-8">
+          
+          {/* Columna 1: Marca */}
+          <div>
+            <h3 className="text-2xl font-bold tracking-tight mb-2">Oriplast<span className="text-lime-500">.py</span></h3>
+            <p className="text-slate-400 text-sm mb-4">
+              Componentes plásticos inyectados de alta resistencia para la industria metalúrgica y licitaciones del Estado.
+            </p>
+            <div className="inline-block bg-lime-500 text-slate-950 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+              Representante Exclusivo
+            </div>
+          </div>
 
-<footer className="bg-gray-900 text-gray-300">
+          {/* Columna 2: Empresa */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4 text-slate-200">Operaciones en Paraguay</h4>
+            <ul className="space-y-2 text-sm text-slate-400">
+              <li className="font-medium text-white">Metal Mad EAS</li>
+              <li>RUC: (80135751-9)</li>
+              <li>Lambaré / Asunción, Paraguay</li>
+            </ul>
+          </div>
 
-<div className="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-3 gap-12">
-
-
-{/* LINKS */}
-
-<div>
-
-<h3 className="text-white font-semibold text-lg mb-5">
-Links
-</h3>
-
-<ul className="space-y-3">
-
-<li className="hover:text-green-500 cursor-pointer transition">
-Principal
-</li>
-
-<li className="hover:text-green-500 cursor-pointer transition">
-A Empresa
-</li>
-
-<li className="hover:text-green-500 cursor-pointer transition">
-Produtos
-</li>
-
-</ul>
-
-</div>
-
-
-{/* ADDRESS */}
-
-<div>
-
-<h3 className="text-white font-semibold text-lg mb-5">
-Endereço
-</h3>
-
-<div className="flex items-start gap-3">
-
-<FaMapMarkerAlt className="text-green-500 text-xl mt-1"/>
-
-<div>
-
-<p>Rod PR 364, Km 580, nº 1378</p>
-<p>Palotina - PR</p>
-<p>CEP 85950-000</p>
-
-<a
-href="https://maps.google.com"
-className="text-green-500 hover:underline mt-2 inline-block"
->
-Ver no mapa
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-
-{/* CONTACT */}
-
-<div>
-
-<h3 className="text-white font-semibold text-lg mb-5">
-Contato
-</h3>
-
-<p>(44) 3649-5995</p>
-<p>(44) 99717-2196</p>
-
-<div className="flex items-center gap-2 mt-2">
-
-<MdEmail className="text-green-500"/>
-
-<p>vendas@oriplast.ind.br</p>
-
-</div>
-
-
-{/* SOCIAL ICONS */}
-
-<div className="flex gap-4 mt-6">
-
-<a className="bg-gray-800 p-3 rounded-full hover:bg-green-500 hover:text-white transition">
-
-<FaFacebook/>
-
-</a>
-
-<a className="bg-gray-800 p-3 rounded-full hover:bg-green-500 hover:text-white transition">
-
-<FaInstagram/>
-
-</a>
-
-<a className="bg-gray-800 p-3 rounded-full hover:bg-green-500 hover:text-white transition">
-
-<FaWhatsapp/>
-
-</a>
-
-<a className="bg-gray-800 p-3 rounded-full hover:bg-green-500 hover:text-white transition">
-
-<MdEmail/>
-
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-
-{/* BOTTOM */}
-
-<div className="border-t border-gray-700 text-center py-6 text-sm">
-
-© 2026 Oriplast Plásticos Injetados
-
-</div>
-
-</footer>
-
-  )
-
+          {/* Columna 3: Contacto Rápido */}
+          <div>
+            <h4 className="text-lg font-semibold mb-4 text-slate-200">Ventas Corporativas</h4>
+            <ul className="space-y-3 text-sm text-slate-400">
+              <li className="flex items-center gap-2">
+                <svg className="w-5 h-5 text-lime-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                +595 (982451828)
+              </li>
+              <li className="flex items-center gap-2">
+                <svg className="w-5 h-5 text-lime-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                ventas@oriplastpy.com
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <div className="pt-8 text-center text-xs text-slate-500">
+          <p>&copy; {new Date().getFullYear()} Metal Mad EAS. Todos los derechos reservados. Desarrollado por AYCweb.</p>
+        </div>
+      </div>
+    </footer>
+  );
 }
