@@ -93,6 +93,7 @@ Permitir que un comprador B2B complete un formulario simple solicitando muestras
 - Decisión: Implementar `lib/services/whatsapp.ts` para construir el texto y el link de WhatsApp — Razón: aísla el servicio de mensajería y facilita una futura migración del cotizador existente.
 - Decisión: Usar `useState` en `app/solicitar-muestra/page.tsx` para manejar el formulario y la selección múltiple — Razón: con 6-8 entradas, el estado local es más ligero que librerías de formularios externas.
 - Decisión: No añadir librerías nuevas para validación o envío de mensajes — Razón: reduce el peso del bundle y evita mantenimiento adicional en un proyecto estático en Vercel.
+- Decisión: Usar `node:assert` en TypeScript para los tests unitarios del dominio en lugar de instalar Vitest o Jest — Razón: el proyecto no tiene test runner configurado y agregar uno suma dependencias y configuración fuera del alcance de esta feature. Los tests quedan listos para migrar a Vitest cuando se decida adoptarlo a nivel proyecto.
 
 ## 10. Tareas (se llena en fase Tasks)
 
