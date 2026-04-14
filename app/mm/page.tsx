@@ -90,29 +90,53 @@ export default function PresupuestadorInterno() {
   const generarPDF = async () => {
     if (!pdfRef.current) return;
     setCargando(true);
+    
     try {
-      const canvas = await html2canvas(pdfRef.current, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
-      const imgData = canvas.toDataURL("image/jpeg", 1.0);
+      // 1. Pequeña espera para asegurar que el DOM esté listo en móviles
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      const canvas = await html2canvas(pdfRef.current, { 
+        scale: 2,
+        useCORS: true, 
+        logging: false,
+        backgroundColor: "#ffffff",
+        // Forzamos el ancho para que no dependa de la pantalla del móvil
+        windowWidth: 794, // Ancho de un A4 en px a 96dpi
+      });
+
+      const imgData = canvas.toDataURL("image/jpeg", 0.95);
       const pdf = new jsPDF("p", "mm", "a4");
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
       pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`Presupuesto_MetalMad_${cliente.institucion || 'Cliente'}.pdf`);
       
-      track('Cotizacion_Interna_Generada', { total: totalPresupuesto, cliente: cliente.institucion });
+      // 2. En móviles, a veces .save() falla. Usamos blob para mayor compatibilidad
+      const pdfBlob = pdf.output('blob');
+      const url = URL.createObjectURL(pdfBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `Presupuesto_MetalMad_${cliente.institucion || 'Cliente'}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      track('Cotizacion_Interna_Generada', { total: totalPresupuesto });
     } catch (error) {
-      console.error(error);
+      console.error("Error detallado:", error);
+      alert("Error al generar el PDF. Intenta desde una PC o Chrome en el móvil.");
+    } finally {
+      setCargando(false);
     }
-    setCargando(false);
   };
 
   return (
     <div className="min-h-screen bg-zinc-100 pb-20">
       <Navbar />
       
-      {/* 📄 VISTA PREVIA DEL PDF (OCULTA O EN FONDO) */}
-      <div className="absolute top-[-9999px] left-[-9999px]">
-        <div ref={pdfRef} className="bg-white p-[20mm] text-black w-[210mm] min-h-[297mm]">
+      {/* 📄 VISTA PREVIA DEL PDF (OCULTA PERO RENDERIZADA) */}
+      <div className="fixed opacity-0 pointer-events-none left-0 top-0" style={{ zIndex: -1 }}>
+        <div ref={pdfRef} className="bg-white p-[15mm] text-black w-[210mm] min-h-[297mm] leading-tight">
             <div className="flex justify-between items-start border-b-4 border-[#1e3a8a] pb-8 mb-8">
               <div className="flex items-center gap-6">
                 <div className="w-24 h-24 bg-[#eff6ff] rounded-2xl flex items-center justify-center font-black text-5xl text-[#1e3a8a] border-2 border-[#bfdbfe] italic tracking-tighter">MM</div>
