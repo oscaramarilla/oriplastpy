@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+import { toJpeg } from 'html-to-image';
 import { track } from '@vercel/analytics'; 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -92,41 +92,26 @@ export default function PresupuestadorInterno() {
     setCargando(true);
     
     try {
-      // 1. Damos un poco más de tiempo para que el DOM móvil se estabilice
-      await new Promise(resolve => setTimeout(resolve, 800));
+      // Damos un respiro al celular
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-      // 2. Detectamos si es móvil para bajar la escala y no saturar la RAM
-      const isMobile = window.innerWidth < 768;
-
-      const canvas = await html2canvas(pdfRef.current, { 
-        scale: isMobile ? 1.5 : 2, // Menos calidad en móvil para asegurar que funcione
-        useCORS: true, 
-        logging: false,
-        backgroundColor: "#ffffff",
-        windowWidth: 794,
-        onclone: (clonedDoc) => {
-          // Truco: Hacemos visible el elemento solo en el clon virtual que toma la foto
-          const element = clonedDoc.getElementById('pdf-wrapper');
-          if (element) {
-            element.style.position = 'relative';
-            element.style.top = '0';
-            element.style.left = '0';
-            element.style.opacity = '1';
-            element.style.zIndex = '1';
-          }
-        }
+      // El nuevo motor saca la foto perfecta sin trabarse con CSS moderno
+      const dataUrl = await toJpeg(pdfRef.current, { 
+        quality: 0.9, 
+        backgroundColor: '#ffffff',
+        pixelRatio: window.innerWidth < 768 ? 1.5 : 2 // Cuida la RAM en celulares
       });
 
-      const imgData = canvas.toDataURL("image/jpeg", 0.9);
       const pdf = new jsPDF("p", "mm", "a4");
       const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      // Calculamos el alto perfecto según las dimensiones del div
+      const pdfHeight = (pdfRef.current.offsetHeight * pdfWidth) / pdfRef.current.offsetWidth;
 
-      pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
+      pdf.addImage(dataUrl, "JPEG", 0, 0, pdfWidth, pdfHeight);
       
       const fileName = `Presupuesto_MetalMad_${cliente.institucion || 'Cliente'}.pdf`;
 
-      // 3. LA MAGIA MÓVIL: Si el celular soporta compartir archivos nativamente
+      // MAGIA MÓVIL: Compartir nativo
       if (navigator.canShare && navigator.userAgent.match(/Android|iPhone|iPad|iPod/i)) {
         const pdfBlob = pdf.output('blob');
         const file = new File([pdfBlob], fileName, { type: 'application/pdf' });
@@ -135,22 +120,19 @@ export default function PresupuestadorInterno() {
           await navigator.share({
             files: [file],
             title: 'Presupuesto Metal Mad',
-            text: 'Adjunto el presupuesto solicitado.'
+            text: 'Adjunto el presupuesto oficial de Metal Mad E.A.S.'
           });
         } else {
-          // Fallback si no deja compartir archivos
           pdf.save(fileName);
         }
       } else {
-        // En PC descarga normal
         pdf.save(fileName);
       }
 
       track('Cotizacion_Interna_Generada', { total: totalPresupuesto, cliente: cliente.institucion });
     } catch (error: any) {
       console.error("Error detallado:", error);
-      // Ahora el error nos dirá exactamente por qué falló
-      alert(`Error técnico: ${error.message || 'Falta de memoria en el navegador'}. Intenta cerrar pestañas.`);
+      alert(`Error técnico: ${error.message || 'Fallo al generar imagen'}. Intenta nuevamente.`);
     } finally {
       setCargando(false);
     }
@@ -160,8 +142,8 @@ export default function PresupuestadorInterno() {
     <div className="min-h-screen bg-zinc-100 pb-20">
       <Navbar />
       
-      {/* 📄 VISTA PREVIA DEL PDF (OCULTA O EN FONDO) */}
-      <div className="overflow-hidden h-0 w-0 absolute top-0 left-0">
+      {/* 📄 VISTA PREVIA DEL PDF (OCULTA FUERA DE PANTALLA) */}
+      <div className="absolute left-[-9999px] top-[-9999px]">
         <div id="pdf-wrapper" ref={pdfRef} className="bg-[#ffffff] p-[20mm] text-[#000000] w-[210mm] min-h-[297mm]">
             <div className="flex justify-between items-start border-b-4 border-[#1e3a8a] pb-8 mb-8">
               <div className="flex items-center gap-6">
