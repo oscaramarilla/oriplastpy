@@ -12,17 +12,18 @@ function CotizacionForm() {
   const searchParams = useSearchParams();
   const productoUrl = searchParams.get('producto');
 
+  // Inicializamos rubro con el valor EXACTO que espera el tipo literal en el dominio
   const [formData, setFormData] = useState({
     nombre: '',
     empresa: '',
-    rubro: 'Metalúrgica',
+    rubro: 'metalurgica', 
     volumen: '',
     producto: productoUrl || '',
   });
 
   const [error, setError] = useState('');
 
-  // Sincronizar el producto si cambia la URL (opcional, pero buena práctica)
+  // Sincronizar el producto si cambia la URL
   useEffect(() => {
     if (productoUrl) {
       setFormData((prev) => ({ ...prev, producto: productoUrl }));
@@ -44,10 +45,10 @@ function CotizacionForm() {
     const payload = {
       nombreCargo: formData.nombre,
       empresa: formData.empresa,
-      // Hacemos el "casting" estricto para calmar a TypeScript
+      // Le aseguramos a TypeScript que este string es uno de los 4 literales permitidos
       rubro: formData.rubro as "metalurgica" | "muebleria" | "licitacion-mec" | "otro",
       volumenEstimado: formData.volumen,
-      productoInteres: formData.producto // <-- El ajuste clave que detectó tu agente
+      productoInteres: formData.producto
     };
 
     const mensaje = generarMensajePerfilado(payload);
@@ -98,10 +99,11 @@ function CotizacionForm() {
               onChange={handleChange}
               className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-lime-400 transition-colors appearance-none"
             >
-              <option value="Metalúrgica">Metalúrgica</option>
-              <option value="Mueblería">Mueblería</option>
-              <option value="Licitación MEC">Proveedor Licitación MEC</option>
-              <option value="Otro">Otro</option>
+              {/* Los 'value' ahora coinciden exactamente con los tipos literales */}
+              <option value="metalurgica">Metalúrgica</option>
+              <option value="muebleria">Mueblería</option>
+              <option value="licitacion-mec">Proveedor Licitación MEC</option>
+              <option value="otro">Otro</option>
             </select>
           </div>
 
@@ -151,7 +153,6 @@ export default function CotizarPage() {
       <Navbar />
       
       <main className="flex-grow flex items-center justify-center py-16 px-4 sm:px-6">
-        {/* Aquí está la magia: Suspense maneja la carga asíncrona de los parámetros de URL */}
         <Suspense fallback={<div className="text-lime-400 font-bold animate-pulse">Cargando cotizador industrial...</div>}>
           <CotizacionForm />
         </Suspense>
