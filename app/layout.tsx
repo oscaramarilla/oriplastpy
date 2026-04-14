@@ -1,5 +1,6 @@
 import "./globals.css"
 import type { Metadata, Viewport } from "next"
+import Script from "next/script"
 
 export const metadata: Metadata = {
   title: "Oriplast Paraguay | Mobiliario Escolar Inyectado",
@@ -19,6 +20,25 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
+      <head>
+        {/* Google Analytics */}
+        <Script 
+          src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX" 
+          strategy="afterInteractive"
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-XXXXXXXXXX');
+            `,
+          }}
+        />
+      </head>
       <body className="bg-gray-50 text-gray-800 antialiased selection:bg-lime-500 selection:text-slate-950">
         {children}
       </body>

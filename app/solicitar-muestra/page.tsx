@@ -97,7 +97,7 @@ _Silla (3 piezas c/u):_
 
 *TOTAL PIEZAS:* ${totalPiezas} unidades.`;
 
-    const numeroWA = "595981000000"; // Tu número aquí
+    const numeroWA = "595994731526"; // Tu número aquí
     const url = `https://wa.me/${numeroWA}?text=${encodeURIComponent(mensaje)}`;
     window.open(url, '_blank');
   };
