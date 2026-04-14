@@ -162,24 +162,24 @@ export default function PresupuestadorInterno() {
       
       {/* 📄 VISTA PREVIA DEL PDF (OCULTA O EN FONDO) */}
       <div className="overflow-hidden h-0 w-0 absolute top-0 left-0">
-        <div id="pdf-wrapper" ref={pdfRef} className="bg-white p-[20mm] text-black w-[210mm] min-h-[297mm]">
+        <div id="pdf-wrapper" ref={pdfRef} className="bg-[#ffffff] p-[20mm] text-[#000000] w-[210mm] min-h-[297mm]">
             <div className="flex justify-between items-start border-b-4 border-[#1e3a8a] pb-8 mb-8">
               <div className="flex items-center gap-6">
                 <div className="w-24 h-24 bg-[#eff6ff] rounded-2xl flex items-center justify-center font-black text-5xl text-[#1e3a8a] border-2 border-[#bfdbfe] italic tracking-tighter">MM</div>
                 <div>
                   <h1 className="text-4xl font-black text-[#172554] italic tracking-tighter">METAL MAD E.A.S.</h1>
                   <p className="text-sm font-bold text-[#3f3f46] uppercase tracking-widest">{emisor.subtitulo}</p>
-                  <p className="text-xs text-zinc-500">RUC: {emisor.ruc} | Lambaré, Paraguay</p>
+                  <p className="text-xs text-[#71717a]">RUC: {emisor.ruc} | Lambaré, Paraguay</p>
                 </div>
               </div>
               <div className="text-right">
-                <h2 className="text-3xl font-black text-zinc-300 uppercase italic">Presupuesto</h2>
-                <p className="font-bold text-xl mt-2">N° {Date.now().toString().slice(-6)}</p>
-                <p className="text-sm">Fecha: {cliente.fecha}</p>
+                <h2 className="text-3xl font-black text-[#d4d4d8] uppercase italic">Presupuesto</h2>
+                <p className="font-bold text-xl mt-2 text-[#000000]">N° {Date.now().toString().slice(-6)}</p>
+                <p className="text-sm text-[#000000]">Fecha: {cliente.fecha}</p>
               </div>
             </div>
 
-            <div className="bg-zinc-50 p-6 rounded-2xl border border-zinc-200 mb-8 grid grid-cols-2 gap-4 text-sm">
+            <div className="bg-[#fafafa] p-6 rounded-2xl border border-[#e4e4e7] mb-8 grid grid-cols-2 gap-4 text-sm text-[#000000]">
               <p><strong>Cliente:</strong> {cliente.institucion || "___________________"}</p>
               <p><strong>RUC:</strong> {cliente.ruc || "___________________"}</p>
               <p><strong>Atención:</strong> {cliente.contacto || "___________________"}</p>
@@ -188,42 +188,42 @@ export default function PresupuestadorInterno() {
 
             <table className="w-full text-sm mb-12">
               <thead>
-                <tr className="bg-[#172554] text-white text-left uppercase text-xs">
+                <tr className="bg-[#172554] text-[#ffffff] text-left uppercase text-xs">
                   <th className="p-4 rounded-tl-xl text-center">Cant.</th>
                   <th className="p-4">Descripción de Componentes</th>
                   <th className="p-4 text-right">Precio Unit.</th>
                   <th className="p-4 text-right rounded-tr-xl">Subtotal</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-100">
+              <tbody>
                 {items.map((item) => (
-                  <tr key={item.id}>
-                    <td className="p-4 text-center font-bold">{item.cantidad}</td>
-                    <td className="p-4 font-medium">{item.nombre}</td>
-                    <td className="p-4 text-right">Gs. {item.precioUnitario.toLocaleString('es-PY')}</td>
-                    <td className="p-4 text-right font-bold">Gs. {(item.cantidad * item.precioUnitario).toLocaleString('es-PY')}</td>
+                  <tr key={item.id} className="border-b border-[#f4f4f5]">
+                    <td className="p-4 text-center font-bold text-[#000000]">{item.cantidad}</td>
+                    <td className="p-4 font-medium text-[#000000]">{item.nombre}</td>
+                    <td className="p-4 text-right text-[#000000]">Gs. {item.precioUnitario.toLocaleString('es-PY')}</td>
+                    <td className="p-4 text-right font-bold text-[#000000]">Gs. {(item.cantidad * item.precioUnitario).toLocaleString('es-PY')}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
 
             <div className="flex justify-end mb-20">
-              <div className="w-72 bg-zinc-900 text-white p-6 rounded-2xl text-right">
-                <p className="text-xs uppercase font-bold text-zinc-400 mb-1">Total IVA Incluido</p>
-                <p className="text-3xl font-black text-lime-400 tracking-tighter">Gs. {totalPresupuesto.toLocaleString('es-PY')}</p>
+              <div className="w-72 bg-[#18181b] text-[#ffffff] p-6 rounded-2xl text-right">
+                <p className="text-xs uppercase font-bold text-[#a1a1aa] mb-1">Total IVA Incluido</p>
+                <p className="text-3xl font-black text-[#a3e635] tracking-tighter">Gs. {totalPresupuesto.toLocaleString('es-PY')}</p>
               </div>
             </div>
 
-            <div className="mt-auto grid grid-cols-2 gap-10 text-[10px] text-zinc-500 border-t pt-8">
+            <div className="mt-auto grid grid-cols-2 gap-10 text-[10px] text-[#71717a] border-t border-[#e4e4e7] pt-8">
               <div>
-                <p className="font-black text-zinc-800 uppercase mb-2">Cuentas Bancarias:</p>
+                <p className="font-black text-[#27272a] uppercase mb-2">Cuentas Bancarias:</p>
                 <p><strong>Ueno Bank:</strong> Cta 20588348 (Metal Mad EAS)</p>
                 <p><strong>Interfisa:</strong> Cta 259080186 (Metal Mad EAS)</p>
                 <p className="mt-2"><strong>Condición:</strong> 50% anticipo, 50% contra entrega.</p>
               </div>
               <div className="text-right">
-                <div className="inline-block w-48 border-t border-zinc-400 pt-2 text-center">
-                  <p className="font-bold text-zinc-800">Dpto. Comercial</p>
+                <div className="inline-block w-48 border-t border-[#a1a1aa] pt-2 text-center">
+                  <p className="font-bold text-[#27272a]">Dpto. Comercial</p>
                   <p>Metal Mad E.A.S.</p>
                 </div>
               </div>
