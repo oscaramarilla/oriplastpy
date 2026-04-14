@@ -6,7 +6,6 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { CATALOGO_B2B } from '@/lib/config/catalogo';
 import { generarMensajePerfilado } from '@/lib/services/whatsapp';
-// Asegúrate de importar los tipos correctos si los definiste en perfilado-b2b.ts
 
 // 1. Separamos el formulario en un sub-componente
 function CotizacionForm() {
@@ -41,8 +40,17 @@ function CotizacionForm() {
       return;
     }
 
-    const mensaje = generarMensajePerfilado(formData);
-    // Asumiendo que generarMensajePerfilado te devuelve el string codificado o la URL completa
+    // Mapeamos el estado local a la interfaz estricta que espera el servicio
+    const payload = {
+      nombreCargo: formData.nombre,
+      empresa: formData.empresa,
+      // Hacemos el "casting" estricto para calmar a TypeScript
+      rubro: formData.rubro as "metalurgica" | "muebleria" | "licitacion-mec" | "otro",
+      volumenEstimado: formData.volumen,
+      productoInteres: formData.producto // <-- El ajuste clave que detectó tu agente
+    };
+
+    const mensaje = generarMensajePerfilado(payload);
     window.open(mensaje, '_blank');
   };
 
