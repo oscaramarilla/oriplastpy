@@ -4,28 +4,18 @@ import { Suspense, useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
-// BASE DE PRECIOS (Preparada para la Fase 3 - Precios internos automáticos)
-const PRECIOS_BASE = {
-  tampo: 0, // Ej: 45000
-  zapataFrontal: 0,
-  zapataPosterior: 0,
-  puntera: 0,
-  portaLibros: 0,
-  asiento: 0,
-  respaldo: 0,
-  contera: 0
-};
-
 function CotizacionForm() {
-  // Pasos 1, 2, 3 y 4: Datos principales y cantidades macro
+  // NUEVO: Modo de cálculo (Conjuntos vs Separado)
+  const [modoCalculo, setModoCalculo] = useState<'conjuntos' | 'separado'>('conjuntos');
+
   const [formData, setFormData] = useState({
     nombre: '',
     color: 'Gris (3er Ciclo / Media)',
+    cantConjuntos: '', // Nueva variable para el modo conjunto
     cantMesas: '',
     cantSillas: '',
   });
 
-  // Paso 5: Lista desglosada (BOM - Bill of Materials)
   const [desglose, setDesglose] = useState({
     tampo: 0,
     zapataFrontal: 0,
@@ -39,31 +29,29 @@ function CotizacionForm() {
 
   const [error, setError] = useState('');
 
-  // MOTOR AUTOMÁTICO: Calcula el desglose cuando cambian las mesas o sillas
+  // MOTOR AUTOMÁTICO V2: Inteligencia según el modo elegido
   useEffect(() => {
-    const mesas = parseInt(formData.cantMesas) || 0;
-    const sillas = parseInt(formData.cantSillas) || 0;
+    // Si es por conjunto, mesas y sillas valen lo mismo. Si es separado, toman sus valores individuales.
+    const mesas = modoCalculo === 'conjuntos' ? (parseInt(formData.cantConjuntos) || 0) : (parseInt(formData.cantMesas) || 0);
+    const sillas = modoCalculo === 'conjuntos' ? (parseInt(formData.cantConjuntos) || 0) : (parseInt(formData.cantSillas) || 0);
 
     setDesglose({
-      // Regla de 1 Mesa = 1 Tampo, 2 Zapata F, 2 Zapata P, 2 Puntera, 1 Porta Libros
       tampo: mesas * 1,
       zapataFrontal: mesas * 2,
       zapataPosterior: mesas * 2,
       puntera: mesas * 2,
       portaLibros: mesas * 1,
-      // Regla de 1 Silla = 1 Asiento, 1 Respaldo, 4 Conteras
       asiento: sillas * 1,
       respaldo: sillas * 1,
       contera: sillas * 4,
     });
-  }, [formData.cantMesas, formData.cantSillas]);
+  }, [formData.cantConjuntos, formData.cantMesas, formData.cantSillas, modoCalculo]);
 
   const handleMainChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setError('');
   };
 
-  // Permite al usuario editar la cantidad desglosada manualmente (ej: pedir repuestos extra)
   const handleDesgloseChange = (item: keyof typeof desglose, value: string) => {
     const numValue = parseInt(value) || 0;
     setDesglose((prev) => ({ ...prev, [item]: numValue }));
@@ -77,47 +65,58 @@ function CotizacionForm() {
 
     const totalPiezas = Object.values(desglose).reduce((a, b) => a + b, 0);
     if (totalPiezas === 0) {
-      setError('Debes ingresar al menos 1 mesa o 1 silla para cotizar.');
+      setError('Debes ingresar cantidades válidas para cotizar.');
       return;
     }
 
-    // Aquí a futuro se multiplicará desglose.item * PRECIOS_BASE.item para el total
+    const mesasSolicitadas = modoCalculo === 'conjuntos' ? formData.cantConjuntos : formData.cantMesas;
+    const sillasSolicitadas = modoCalculo === 'conjuntos' ? formData.cantConjuntos : formData.cantSillas;
 
-    const mensaje = `*SOLICITUD DE COTIZACIÓN INDUSTRIAL B2B* 🏭
+    const mensaje = `*COTIZACIÓN INDUSTRIAL - BOM* 🏭
 
-*1. Datos del Cliente:* ${formData.nombre}
-*2. Color Homologado:* ${formData.color}
+*Cliente:* ${formData.nombre}
+*Color MEC:* ${formData.color}
+*Modalidad:* ${modoCalculo === 'conjuntos' ? 'Por Conjuntos' : 'Piezas Separadas'}
 
-*Cantidades Base Solicitadas:*
-- Mesas a ensamblar: ${formData.cantMesas || 0}
-- Sillas a ensamblar: ${formData.cantSillas || 0}
+*Cantidades Base:*
+- Mesas a ensamblar: ${mesasSolicitadas || 0}
+- Sillas a ensamblar: ${sillasSolicitadas || 0}
 
-*📋 LISTA DESGLOSADA DE COMPONENTES PLÁSTICOS:*
-_Componentes para Mesas:_
-- Tampos / Mesadas: ${desglose.tampo}
+*📋 LISTA DE COMPONENTES A INYECTAR:*
+_Mesa (5 piezas c/u):_
+- Tampos: ${desglose.tampo}
 - Zapatas Frontales: ${desglose.zapataFrontal}
 - Zapatas Posteriores: ${desglose.zapataPosterior}
-- Punteras p/ Travesaño: ${desglose.puntera}
+- Punteras: ${desglose.puntera}
 - Porta Libros: ${desglose.portaLibros}
 
-_Componentes para Sillas:_
+_Silla (3 piezas c/u):_
 - Asientos: ${desglose.asiento}
 - Respaldos: ${desglose.respaldo}
-- Conteras con Pino: ${desglose.contera}
+- Conteras: ${desglose.contera}
 
-*Total de piezas a inyectar:* ${totalPiezas} unidades.
-_Aguardando confirmación de disponibilidad y precios._`;
+*TOTAL PIEZAS:* ${totalPiezas} unidades.`;
 
-    // Reemplaza con tu número
-    const numeroWA = "595981000000"; 
+    const numeroWA = "595981000000"; // Tu número aquí
     const url = `https://wa.me/${numeroWA}?text=${encodeURIComponent(mensaje)}`;
     window.open(url, '_blank');
   };
 
   return (
-    <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-2xl max-w-3xl mx-auto w-full text-white">
-      <h2 className="text-3xl font-black mb-2 uppercase italic tracking-tighter">Calculadora <span className="text-lime-400">BOM</span></h2>
-      <p className="text-slate-400 mb-8 text-sm">Lista de Materiales (Bill of Materials) automática para ensamblaje.</p>
+    <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-2xl max-w-4xl mx-auto w-full text-white">
+      <div className="mb-8">
+        <h2 className="text-3xl md:text-4xl font-black uppercase italic tracking-tighter mb-2">Calculadora <span className="text-lime-400">BOM Escolar</span></h2>
+        <p className="text-slate-400 text-sm mb-4">Sistema automatizado de Lista de Materiales (Bill of Materials) para ensamblaje.</p>
+        
+        {/* LA REGLA VISIBLE */}
+        <div className="bg-lime-400/10 border border-lime-400/20 p-4 rounded-xl text-sm text-lime-100 flex flex-col md:flex-row gap-4 md:items-center">
+          <span className="font-bold text-lime-400 uppercase tracking-widest text-xs">Regla Estructural:</span>
+          <div>
+            <p><strong>1 Mesa =</strong> 1 Tampo + 2 Zapata F. + 2 Zapata P. + 2 Punteras + 1 Porta libros</p>
+            <p><strong>1 Silla =</strong> 1 Asiento + 1 Respaldo + 4 Conteras con pino</p>
+          </div>
+        </div>
+      </div>
       
       {error && (
         <div className="bg-red-500/10 border border-red-500 text-red-500 p-4 rounded-xl mb-6 text-sm font-bold">
@@ -125,119 +124,97 @@ _Aguardando confirmación de disponibilidad y precios._`;
         </div>
       )}
 
-      <div className="space-y-8">
-        {/* BLOQUE 1: DATOS PRINCIPALES */}
-        <div className="bg-slate-800/50 p-6 rounded-2xl border border-slate-700/50">
-          <h3 className="text-lime-400 font-bold mb-4 uppercase text-xs tracking-widest">1. Configuración Base</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* COLUMNA IZQUIERDA: CONFIGURACIÓN */}
+        <div className="lg:col-span-5 space-y-6">
+          <div className="bg-slate-800/50 p-6 rounded-2xl border border-slate-700/50 space-y-5">
             <div>
               <label className="block text-xs font-bold text-slate-400 uppercase mb-2">1. Nombre / Empresa *</label>
-              <input 
-                type="text" 
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleMainChange}
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-lime-400 focus:ring-1 focus:ring-lime-400 outline-none"
-                placeholder="Ej. Metalúrgica San José" 
-              />
+              <input type="text" name="nombre" value={formData.nombre} onChange={handleMainChange} className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-lime-400 focus:ring-1 focus:ring-lime-400 outline-none" placeholder="Ej. Metalúrgica San José" />
             </div>
+            
             <div>
               <label className="block text-xs font-bold text-slate-400 uppercase mb-2">2. Color Norma MEC</label>
-              <select 
-                name="color"
-                value={formData.color}
-                onChange={handleMainChange}
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-lime-400 outline-none"
-              >
+              <select name="color" value={formData.color} onChange={handleMainChange} className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-lime-400 outline-none">
                 <option value="Naranja (Educación Inicial)">Naranja (Educación Inicial)</option>
                 <option value="Amarillo (1er Ciclo)">Amarillo (1er Ciclo)</option>
                 <option value="Rojo (2do Ciclo)">Rojo (2do Ciclo)</option>
                 <option value="Gris (3er Ciclo / Media)">Gris (3er Ciclo / Media)</option>
               </select>
             </div>
-            <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase mb-2">3. Cantidad de Sillas</label>
-              <input 
-                type="number" 
-                name="cantSillas"
-                value={formData.cantSillas}
-                onChange={handleMainChange}
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-lime-400 focus:ring-1 focus:ring-lime-400 outline-none"
-                placeholder="0" min="0"
-              />
+
+            {/* SWITCH DE MODOS */}
+            <div className="pt-4 border-t border-slate-700">
+              <label className="block text-xs font-bold text-slate-400 uppercase mb-3">3. Modo de Cálculo</label>
+              <div className="flex bg-slate-900 rounded-xl p-1 border border-slate-700">
+                <button onClick={() => setModoCalculo('conjuntos')} className={`flex-1 py-2 text-xs font-bold uppercase rounded-lg transition-all ${modoCalculo === 'conjuntos' ? 'bg-lime-400 text-black' : 'text-slate-400 hover:text-white'}`}>Por Conjuntos</button>
+                <button onClick={() => setModoCalculo('separado')} className={`flex-1 py-2 text-xs font-bold uppercase rounded-lg transition-all ${modoCalculo === 'separado' ? 'bg-lime-400 text-black' : 'text-slate-400 hover:text-white'}`}>Separado</button>
+              </div>
             </div>
-            <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase mb-2">4. Cantidad de Mesas</label>
-              <input 
-                type="number" 
-                name="cantMesas"
-                value={formData.cantMesas}
-                onChange={handleMainChange}
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-lime-400 focus:ring-1 focus:ring-lime-400 outline-none"
-                placeholder="0" min="0"
-              />
-            </div>
+
+            {/* INPUTS DINÁMICOS SEGÚN EL MODO */}
+            {modoCalculo === 'conjuntos' ? (
+              <div>
+                <label className="block text-xs font-bold text-lime-400 uppercase mb-2">Cantidad de Conjuntos</label>
+                <input type="number" name="cantConjuntos" value={formData.cantConjuntos} onChange={handleMainChange} className="w-full bg-slate-900 border border-lime-400/50 rounded-xl px-4 py-3 text-white focus:border-lime-400 focus:ring-1 focus:ring-lime-400 outline-none" placeholder="0" min="0" />
+                <p className="text-[10px] text-slate-500 mt-1">1 conjunto = 1 mesa + 1 silla</p>
+              </div>
+            ) : (
+              <div className="flex gap-4">
+                <div className="flex-1">
+                  <label className="block text-xs font-bold text-slate-400 uppercase mb-2">Sillas</label>
+                  <input type="number" name="cantSillas" value={formData.cantSillas} onChange={handleMainChange} className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-lime-400 outline-none" placeholder="0" min="0" />
+                </div>
+                <div className="flex-1">
+                  <label className="block text-xs font-bold text-slate-400 uppercase mb-2">Mesas</label>
+                  <input type="number" name="cantMesas" value={formData.cantMesas} onChange={handleMainChange} className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-lime-400 outline-none" placeholder="0" min="0" />
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* BLOQUE 2: DESGLOSE EDITABLE */}
-        <div className="bg-slate-800/50 p-6 rounded-2xl border border-slate-700/50">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lime-400 font-bold uppercase text-xs tracking-widest">5. Lista Desglosada (Piezas a Inyectar)</h3>
-            <span className="text-[10px] bg-slate-700 px-2 py-1 rounded text-slate-300">Cantidades Editables</span>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-            {/* Columna Mesas */}
-            <div className="space-y-3">
-              <h4 className="text-slate-500 text-xs font-bold uppercase border-b border-slate-700 pb-2">Componentes de Mesa</h4>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Tampo / Mesada</span>
-                <input type="number" value={desglose.tampo} onChange={(e) => handleDesgloseChange('tampo', e.target.value)} className="w-20 bg-slate-900 border border-slate-600 rounded-lg px-2 py-1 text-center outline-none focus:border-lime-400" />
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Zapata Frontal (Mayor)</span>
-                <input type="number" value={desglose.zapataFrontal} onChange={(e) => handleDesgloseChange('zapataFrontal', e.target.value)} className="w-20 bg-slate-900 border border-slate-600 rounded-lg px-2 py-1 text-center outline-none focus:border-lime-400" />
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Zapata Posterior (Menor)</span>
-                <input type="number" value={desglose.zapataPosterior} onChange={(e) => handleDesgloseChange('zapataPosterior', e.target.value)} className="w-20 bg-slate-900 border border-slate-600 rounded-lg px-2 py-1 text-center outline-none focus:border-lime-400" />
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Puntera Superior</span>
-                <input type="number" value={desglose.puntera} onChange={(e) => handleDesgloseChange('puntera', e.target.value)} className="w-20 bg-slate-900 border border-slate-600 rounded-lg px-2 py-1 text-center outline-none focus:border-lime-400" />
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Porta Libros</span>
-                <input type="number" value={desglose.portaLibros} onChange={(e) => handleDesgloseChange('portaLibros', e.target.value)} className="w-20 bg-slate-900 border border-slate-600 rounded-lg px-2 py-1 text-center outline-none focus:border-lime-400" />
-              </div>
+        {/* COLUMNA DERECHA: DESGLOSE Y BOTÓN */}
+        <div className="lg:col-span-7 flex flex-col h-full">
+          <div className="bg-slate-800/50 p-6 rounded-2xl border border-slate-700/50 flex-grow mb-6">
+            <div className="flex justify-between items-center mb-6 pb-4 border-b border-slate-700">
+              <h3 className="text-lime-400 font-bold uppercase text-xs tracking-widest">Resumen Desglosado</h3>
+              <span className="text-[10px] bg-slate-700 px-2 py-1 rounded text-slate-300">Editable p/ Repuestos</span>
             </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+              <div className="space-y-3">
+                <h4 className="text-slate-500 text-xs font-bold uppercase">Componentes Mesa</h4>
+                {['tampo', 'zapataFrontal', 'zapataPosterior', 'puntera', 'portaLibros'].map((item) => (
+                  <div key={item} className="flex justify-between items-center bg-slate-900/50 px-3 py-2 rounded-lg border border-slate-800 hover:border-slate-600 transition-colors">
+                    <span className="text-sm text-slate-300 capitalize">{item.replace(/([A-Z])/g, ' $1').trim()}</span>
+                    <input type="number" value={desglose[item as keyof typeof desglose]} onChange={(e) => handleDesgloseChange(item as keyof typeof desglose, e.target.value)} className="w-16 bg-transparent text-right font-bold text-white outline-none" />
+                  </div>
+                ))}
+              </div>
 
-            {/* Columna Sillas */}
-            <div className="space-y-3">
-              <h4 className="text-slate-500 text-xs font-bold uppercase border-b border-slate-700 pb-2">Componentes de Silla</h4>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Asiento</span>
-                <input type="number" value={desglose.asiento} onChange={(e) => handleDesgloseChange('asiento', e.target.value)} className="w-20 bg-slate-900 border border-slate-600 rounded-lg px-2 py-1 text-center outline-none focus:border-lime-400" />
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Respaldo</span>
-                <input type="number" value={desglose.respaldo} onChange={(e) => handleDesgloseChange('respaldo', e.target.value)} className="w-20 bg-slate-900 border border-slate-600 rounded-lg px-2 py-1 text-center outline-none focus:border-lime-400" />
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Contera con Pino</span>
-                <input type="number" value={desglose.contera} onChange={(e) => handleDesgloseChange('contera', e.target.value)} className="w-20 bg-slate-900 border border-slate-600 rounded-lg px-2 py-1 text-center outline-none focus:border-lime-400" />
+              <div className="space-y-3">
+                <h4 className="text-slate-500 text-xs font-bold uppercase">Componentes Silla</h4>
+                {['asiento', 'respaldo', 'contera'].map((item) => (
+                  <div key={item} className="flex justify-between items-center bg-slate-900/50 px-3 py-2 rounded-lg border border-slate-800 hover:border-slate-600 transition-colors">
+                    <span className="text-sm text-slate-300 capitalize">{item}</span>
+                    <input type="number" value={desglose[item as keyof typeof desglose]} onChange={(e) => handleDesgloseChange(item as keyof typeof desglose, e.target.value)} className="w-16 bg-transparent text-right font-bold text-white outline-none" />
+                  </div>
+                ))}
+                
+                {/* TOTAL SUMMARY */}
+                <div className="mt-6 pt-4 border-t border-slate-700 flex justify-between items-center">
+                  <span className="text-xs font-bold text-slate-400 uppercase">Total Piezas:</span>
+                  <span className="text-2xl font-black text-lime-400">{Object.values(desglose).reduce((a, b) => a + b, 0)}</span>
+                </div>
               </div>
             </div>
           </div>
+
+          <button onClick={generarMensajeWhatsApp} className="w-full bg-lime-400 hover:bg-lime-300 text-black font-black py-4 rounded-xl transition-all active:scale-95 shadow-[0_4px_20px_rgba(163,230,53,0.2)] uppercase tracking-tight">
+            Enviar Pedido Corporativo
+          </button>
         </div>
-
-        <button 
-          onClick={generarMensajeWhatsApp}
-          className="w-full bg-lime-400 hover:bg-lime-300 text-black font-black py-4 rounded-xl transition-all active:scale-95 shadow-[0_4px_20px_rgba(163,230,53,0.2)] uppercase tracking-tight"
-        >
-          Enviar Desglose a Ventas (WhatsApp)
-        </button>
       </div>
     </div>
   );
@@ -248,7 +225,7 @@ export default function CotizarPage() {
     <div className="min-h-screen bg-black flex flex-col">
       <Navbar />
       <main className="flex-grow flex items-center justify-center py-16 px-4 sm:px-6">
-        <Suspense fallback={<div className="text-lime-400 font-bold animate-pulse">Cargando motor de cálculo...</div>}>
+        <Suspense fallback={<div className="text-lime-400 font-bold animate-pulse">Cargando motor corporativo...</div>}>
           <CotizacionForm />
         </Suspense>
       </main>
