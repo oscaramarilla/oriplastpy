@@ -92,39 +92,65 @@ export default function PresupuestadorInterno() {
     setCargando(true);
     
     try {
-      // 1. Pequeña espera para asegurar que el DOM esté listo en móviles
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // 1. Damos un poco más de tiempo para que el DOM móvil se estabilice
+      await new Promise(resolve => setTimeout(resolve, 800));
+
+      // 2. Detectamos si es móvil para bajar la escala y no saturar la RAM
+      const isMobile = window.innerWidth < 768;
 
       const canvas = await html2canvas(pdfRef.current, { 
-        scale: 2,
+        scale: isMobile ? 1.5 : 2, // Menos calidad en móvil para asegurar que funcione
         useCORS: true, 
         logging: false,
         backgroundColor: "#ffffff",
-        // Forzamos el ancho para que no dependa de la pantalla del móvil
-        windowWidth: 794, // Ancho de un A4 en px a 96dpi
+        windowWidth: 794,
+        onclone: (clonedDoc) => {
+          // Truco: Hacemos visible el elemento solo en el clon virtual que toma la foto
+          const element = clonedDoc.getElementById('pdf-wrapper');
+          if (element) {
+            element.style.position = 'relative';
+            element.style.top = '0';
+            element.style.left = '0';
+            element.style.opacity = '1';
+            element.style.zIndex = '1';
+          }
+        }
       });
 
-      const imgData = canvas.toDataURL("image/jpeg", 0.95);
+      const imgData = canvas.toDataURL("image/jpeg", 0.9);
       const pdf = new jsPDF("p", "mm", "a4");
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
       pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
       
-      // 2. En móviles, a veces .save() falla. Usamos blob para mayor compatibilidad
-      const pdfBlob = pdf.output('blob');
-      const url = URL.createObjectURL(pdfBlob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `Presupuesto_MetalMad_${cliente.institucion || 'Cliente'}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const fileName = `Presupuesto_MetalMad_${cliente.institucion || 'Cliente'}.pdf`;
 
-      track('Cotizacion_Interna_Generada', { total: totalPresupuesto });
-    } catch (error) {
+      // 3. LA MAGIA MÓVIL: Si el celular soporta compartir archivos nativamente
+      if (navigator.canShare && navigator.userAgent.match(/Android|iPhone|iPad|iPod/i)) {
+        const pdfBlob = pdf.output('blob');
+        const file = new File([pdfBlob], fileName, { type: 'application/pdf' });
+        
+        if (navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            title: 'Presupuesto Metal Mad',
+            text: 'Adjunto el presupuesto solicitado.'
+          });
+        } else {
+          // Fallback si no deja compartir archivos
+          pdf.save(fileName);
+        }
+      } else {
+        // En PC descarga normal
+        pdf.save(fileName);
+      }
+
+      track('Cotizacion_Interna_Generada', { total: totalPresupuesto, cliente: cliente.institucion });
+    } catch (error: any) {
       console.error("Error detallado:", error);
-      alert("Error al generar el PDF. Intenta desde una PC o Chrome en el móvil.");
+      // Ahora el error nos dirá exactamente por qué falló
+      alert(`Error técnico: ${error.message || 'Falta de memoria en el navegador'}. Intenta cerrar pestañas.`);
     } finally {
       setCargando(false);
     }
@@ -134,9 +160,9 @@ export default function PresupuestadorInterno() {
     <div className="min-h-screen bg-zinc-100 pb-20">
       <Navbar />
       
-      {/* 📄 VISTA PREVIA DEL PDF (OCULTA PERO RENDERIZADA) */}
-      <div className="fixed opacity-0 pointer-events-none left-0 top-0" style={{ zIndex: -1 }}>
-        <div ref={pdfRef} className="bg-white p-[15mm] text-black w-[210mm] min-h-[297mm] leading-tight">
+      {/* 📄 VISTA PREVIA DEL PDF (OCULTA O EN FONDO) */}
+      <div className="overflow-hidden h-0 w-0 absolute top-0 left-0">
+        <div id="pdf-wrapper" ref={pdfRef} className="bg-white p-[20mm] text-black w-[210mm] min-h-[297mm]">
             <div className="flex justify-between items-start border-b-4 border-[#1e3a8a] pb-8 mb-8">
               <div className="flex items-center gap-6">
                 <div className="w-24 h-24 bg-[#eff6ff] rounded-2xl flex items-center justify-center font-black text-5xl text-[#1e3a8a] border-2 border-[#bfdbfe] italic tracking-tighter">MM</div>
