@@ -60,7 +60,7 @@ const productsData = [
     id: 'regaton',
     category: 'accesorios',
     name: 'Regatón Antideslizante Pino',
-    src: '/images/thumb-regaton-pino.webp',
+    src: '/images/spec-detalle-regaton-pino.webp',
     sellingPoints: [
       'Protección total del piso: Evita rayones en cerámicas.',
       'Silencioso: Reduce el ruido en el aula al mover muebles.',
@@ -71,7 +71,7 @@ const productsData = [
     id: 'zapata',
     category: 'accesorios',
     name: 'Zapata Frontal Estabilidad',
-    src: '/images/thumb-zapata-frontal.webp',
+    src: '/images/spec-detalle-zapata-frontal-mayor.webp',
     sellingPoints: [
       'Diseño exclusivo para mayor base de apoyo en mesas.',
       'Evita el vuelco accidental.',
