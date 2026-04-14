@@ -1,6 +1,7 @@
 import type { ProductItem } from "../config/solicitud-muestra";
 import { WHATSAPP_NUMBER } from "../config/solicitud-muestra";
 import type { SolicitudMuestra } from "../domain/solicitud-muestra";
+import type { DatosPerfiladoB2B } from "../domain/perfilado-b2b";
 
 export function buildWhatsappMessage(data: SolicitudMuestra, catalog: ProductItem[]): string {
   const productLines = data.productos
@@ -17,3 +18,28 @@ export function buildWhatsappMessage(data: SolicitudMuestra, catalog: ProductIte
 export function generateWhatsappLink(message: string): string {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
 }
+
+export function generarMensajePerfilado(datos: DatosPerfiladoB2B): string {
+  const rubroMap: Record<string, string> = {
+    'metalurgica': 'Metalúrgica',
+    'muebleria': 'Mueblería',
+    'licitacion-mec': 'Licitación MEC',
+    'otro': 'Otro'
+  };
+
+  const mensajeStructurado = `
+*COTIZACIÓN B2B - ORIPLAST/METAL MAD*
+
+*DATOS DEL CLIENTE:*
+*Nombre/Cargo:* ${datos.nombreCargo}
+*Empresa:* ${datos.empresa}
+*Rubro:* ${rubroMap[datos.rubro] || datos.rubro}
+*Volumen estimado:* ${datos.volumenEstimado}
+${datos.productoInteres ? `*Producto de interés:* ${datos.productoInteres}` : ''}
+
+Solicito cotización para evaluar colaboración mayorista.
+  `.trim();
+
+  return encodeURIComponent(mensajeStructurado);
+}
+
