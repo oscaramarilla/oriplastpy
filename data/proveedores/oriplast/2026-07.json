@@ -1,0 +1,1437 @@
+{
+  "$schema": "../../../lib/domain/lista-precios.schema.md",
+  "id": "oriplast-2026-07",
+  "proveedor": {
+    "nombre": "Oriplast - C.A. Canassa Cia Ltda",
+    "cnpj": "01.688.452/0001-70",
+    "pais": "BR",
+    "planta": "Rodovia PR 364, KM 1.378 - Parque Industrial, Palotina/PR, CEP 85.950-000",
+    "email": "vendas@oriplast.ind.br",
+    "telefono": "+55 44 3649-5995",
+    "whatsapp": "+55 44 99717-2196"
+  },
+  "moneda": "BRL",
+  "incoterm": "FOB fábrica Palotina/PR",
+  "emitida": "2026-07-06",
+  "vigencia_desde": "2026-07-06",
+  "vigencia_hasta": null,
+  "origen": {
+    "tipo": "tabela-pdf-proveedor",
+    "titulo": "TABELA DE PREÇOS 2026 - JULHO",
+    "recibido": "2026-07-28",
+    "transcripcion": "manual-verificada"
+  },
+  "condiciones": {
+    "descuento_pago_anticipado_max": 0.05,
+    "nota_pt": "Para pagamento à vista (antecipado), quando solicitado pelo cliente, conceder até 5% desconto."
+  },
+  "lineas": {
+    "escolar-pp-fnde": {
+      "pt": "Linha escolar em polipropileno - Padrão FNDE",
+      "es": "Línea escolar en polipropileno - Estándar FNDE"
+    },
+    "asiento-respaldo-infantil": {
+      "pt": "Assento / Encosto Infantil",
+      "es": "Asiento / Respaldo Infantil"
+    },
+    "trapecio-infantil": {
+      "pt": "Linha Trapézio Infantil",
+      "es": "Línea Trapecio Infantil"
+    },
+    "trapecio-juvenil": {
+      "pt": "Linha Trapézio Juvenil",
+      "es": "Línea Trapecio Juvenil"
+    },
+    "iso-pratice": {
+      "pt": "Linha ISO (Pratice) em polipropileno",
+      "es": "Línea ISO (Pratice) en polipropileno"
+    },
+    "sb-oriplast": {
+      "pt": "Linha SB Oriplast em polipropileno",
+      "es": "Línea SB Oriplast en polipropileno"
+    }
+  },
+  "items": [
+    {
+      "codigo": "2249",
+      "linea": "escolar-pp-fnde",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento/Encosto FNDE CJA 01 Maternal",
+      "descripcion_es": "Asiento/Respaldo FNDE CJA 01 Maternal",
+      "color": {
+        "pt": "LARANJA",
+        "es": "naranja",
+        "hex": "#E8720C"
+      },
+      "medidas_mm": "Asiento 340×260 / Respaldo 330×168",
+      "unidad": "UN",
+      "precio_unit": 22.8
+    },
+    {
+      "codigo": "2162",
+      "linea": "escolar-pp-fnde",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento/Encosto FNDE CJA 03 Infantil",
+      "descripcion_es": "Asiento/Respaldo FNDE CJA 03 Infantil",
+      "color": {
+        "pt": "AMARELO",
+        "es": "amarillo",
+        "hex": "#F2C200"
+      },
+      "medidas_mm": "Asiento 400×300 / Respaldo 395×200",
+      "unidad": "UN",
+      "precio_unit": 28.4
+    },
+    {
+      "codigo": "2161",
+      "linea": "escolar-pp-fnde",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento/Encosto FNDE CJA 04 Infanto Juvenil",
+      "descripcion_es": "Asiento/Respaldo FNDE CJA 04 Infanto Juvenil",
+      "color": {
+        "pt": "VERMELHO",
+        "es": "rojo",
+        "hex": "#C8102E"
+      },
+      "medidas_mm": "Asiento 400×350 / Respaldo 395×200",
+      "unidad": "UN",
+      "precio_unit": 31.35
+    },
+    {
+      "codigo": "2581",
+      "linea": "escolar-pp-fnde",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento/Encosto FNDE CJA 05 Adulto",
+      "descripcion_es": "Asiento/Respaldo FNDE CJA 05 Adulto",
+      "color": {
+        "pt": "VERDE BANDEIRA",
+        "es": "verde bandera",
+        "hex": "#009045"
+      },
+      "medidas_mm": "Asiento 430×400 / Respaldo 395×200",
+      "unidad": "UN",
+      "precio_unit": 32.7
+    },
+    {
+      "codigo": "646505",
+      "linea": "escolar-pp-fnde",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento/Encosto FNDE CJA 06 Adulto",
+      "descripcion_es": "Asiento/Respaldo FNDE CJA 06 Adulto",
+      "color": {
+        "pt": "AZUL",
+        "es": "azul",
+        "hex": "#0B4C9E"
+      },
+      "medidas_mm": "Asiento 430×400 / Respaldo 395×200",
+      "unidad": "UN",
+      "precio_unit": 32.7
+    },
+    {
+      "codigo": "2526",
+      "linea": "escolar-pp-fnde",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento/Encosto FNDE CJP 01 Professor",
+      "descripcion_es": "Asiento/Respaldo FNDE CJP 01 Profesor",
+      "color": {
+        "pt": "CINZA",
+        "es": "gris",
+        "hex": "#9AA0A6"
+      },
+      "medidas_mm": "Asiento 430×400 / Respaldo 395×200",
+      "unidad": "UN",
+      "precio_unit": 32.7
+    },
+    {
+      "codigo": "SAPATA-ANT",
+      "linea": "escolar-pp-fnde",
+      "tipo": "accesorio",
+      "descripcion_pt": "Sapata (modelo antigo)",
+      "descripcion_es": "Zapata (modelo antiguo)",
+      "color": {
+        "pt": "DIV. CORES",
+        "es": "varios colores",
+        "hex": null
+      },
+      "medidas_mm": "1 1/2\"",
+      "unidad": "UN",
+      "precio_unit": 2.09
+    },
+    {
+      "codigo": "SAPATA-MAIOR",
+      "linea": "escolar-pp-fnde",
+      "tipo": "accesorio",
+      "descripcion_pt": "Sapata maior FNDE",
+      "descripcion_es": "Zapata mayor FNDE",
+      "color": {
+        "pt": "DIV. CORES",
+        "es": "varios colores",
+        "hex": null
+      },
+      "medidas_mm": null,
+      "unidad": "UN",
+      "precio_unit": 2.78
+    },
+    {
+      "codigo": "SAPATA-MENOR",
+      "linea": "escolar-pp-fnde",
+      "tipo": "accesorio",
+      "descripcion_pt": "Sapata menor FNDE",
+      "descripcion_es": "Zapata menor FNDE",
+      "color": {
+        "pt": "DIV. CORES",
+        "es": "varios colores",
+        "hex": null
+      },
+      "medidas_mm": null,
+      "unidad": "UN",
+      "precio_unit": 1.69
+    },
+    {
+      "codigo": "2102",
+      "linea": "escolar-pp-fnde",
+      "tipo": "accesorio",
+      "descripcion_pt": "Ponteira de mesa",
+      "descripcion_es": "Puntera de mesa",
+      "color": {
+        "pt": "DIV. CORES",
+        "es": "varios colores",
+        "hex": null
+      },
+      "medidas_mm": "1\"",
+      "unidad": "UN",
+      "precio_unit": 0.68
+    },
+    {
+      "codigo": "2114",
+      "linea": "escolar-pp-fnde",
+      "tipo": "accesorio",
+      "descripcion_pt": "Pino e bucha da cadeira",
+      "descripcion_es": "Pino y buje de la silla",
+      "color": {
+        "pt": "DIV. CORES",
+        "es": "varios colores",
+        "hex": null
+      },
+      "medidas_mm": "3/4 y 7/8",
+      "unidad": "UN",
+      "precio_unit": 0.55
+    },
+    {
+      "codigo": "2473",
+      "linea": "escolar-pp-fnde",
+      "tipo": "accesorio",
+      "descripcion_pt": "Porta livros preto",
+      "descripcion_es": "Porta libros negro",
+      "color": {
+        "pt": "PRETO",
+        "es": "negro",
+        "hex": "#1A1A1A"
+      },
+      "medidas_mm": "520×310",
+      "unidad": "UN",
+      "precio_unit": 16.7
+    },
+    {
+      "codigo": "2414",
+      "linea": "escolar-pp-fnde",
+      "tipo": "accesorio",
+      "descripcion_pt": "Porta livros cinza",
+      "descripcion_es": "Porta libros gris",
+      "color": {
+        "pt": "CINZA",
+        "es": "gris",
+        "hex": "#9AA0A6"
+      },
+      "medidas_mm": "520×310",
+      "unidad": "UN",
+      "precio_unit": 17.9
+    },
+    {
+      "codigo": "2627",
+      "linea": "escolar-pp-fnde",
+      "tipo": "accesorio",
+      "descripcion_pt": "Tampa de tubo conjunto coletivo",
+      "descripcion_es": "Tapa de tubo conjunto colectivo",
+      "color": {
+        "pt": "DIV. CORES",
+        "es": "varios colores",
+        "hex": null
+      },
+      "medidas_mm": null,
+      "unidad": "UN",
+      "precio_unit": 0.44
+    },
+    {
+      "codigo": "2664",
+      "linea": "escolar-pp-fnde",
+      "tipo": "tablero",
+      "descripcion_pt": "Prancheta universitária cinza",
+      "descripcion_es": "Tablero universitario gris",
+      "color": {
+        "pt": "CINZA",
+        "es": "gris",
+        "hex": "#9AA0A6"
+      },
+      "medidas_mm": "550×310",
+      "unidad": "UN",
+      "precio_unit": 17.9
+    },
+    {
+      "codigo": "2672",
+      "linea": "escolar-pp-fnde",
+      "tipo": "tablero",
+      "descripcion_pt": "Prancheta universitária preta",
+      "descripcion_es": "Tablero universitario negro",
+      "color": {
+        "pt": "PRETO",
+        "es": "negro",
+        "hex": "#1A1A1A"
+      },
+      "medidas_mm": "550×310",
+      "unidad": "UN",
+      "precio_unit": 16.9
+    },
+    {
+      "codigo": "2673",
+      "linea": "escolar-pp-fnde",
+      "tipo": "tablero",
+      "descripcion_pt": "Prancheta universitária azul royal",
+      "descripcion_es": "Tablero universitario azul royal",
+      "color": {
+        "pt": "AZUL ROYAL",
+        "es": "azul royal",
+        "hex": "#123E9C"
+      },
+      "medidas_mm": "550×310",
+      "unidad": "UN",
+      "precio_unit": 17.9
+    },
+    {
+      "codigo": "278848",
+      "linea": "escolar-pp-fnde",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo escolar azul fnde em PP",
+      "descripcion_es": "Tampo escolar azul FNDE en PP",
+      "color": {
+        "pt": "AZUL FNDE",
+        "es": "azul FNDE",
+        "hex": "#0B4C9E"
+      },
+      "medidas_mm": "600×460",
+      "unidad": "UN",
+      "precio_unit": 53.4
+    },
+    {
+      "codigo": "420361",
+      "linea": "escolar-pp-fnde",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo escolar verde bandeira em PP",
+      "descripcion_es": "Tampo escolar verde bandera en PP",
+      "color": {
+        "pt": "VERDE BANDEIRA",
+        "es": "verde bandera",
+        "hex": "#009045"
+      },
+      "medidas_mm": "600×460",
+      "unidad": "UN",
+      "precio_unit": 53.4
+    },
+    {
+      "codigo": "764926",
+      "linea": "escolar-pp-fnde",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo escolar vermelho em PP",
+      "descripcion_es": "Tampo escolar rojo en PP",
+      "color": {
+        "pt": "VERMELHO",
+        "es": "rojo",
+        "hex": "#C8102E"
+      },
+      "medidas_mm": "600×460",
+      "unidad": "UN",
+      "precio_unit": 53.4
+    },
+    {
+      "codigo": "561544",
+      "linea": "escolar-pp-fnde",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo escolar laranja em PP",
+      "descripcion_es": "Tampo escolar naranja en PP",
+      "color": {
+        "pt": "LARANJA",
+        "es": "naranja",
+        "hex": "#E8720C"
+      },
+      "medidas_mm": "600×460",
+      "unidad": "UN",
+      "precio_unit": 53.4
+    },
+    {
+      "codigo": "636511",
+      "linea": "escolar-pp-fnde",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo escolar amarelo em PP",
+      "descripcion_es": "Tampo escolar amarillo en PP",
+      "color": {
+        "pt": "AMARELO",
+        "es": "amarillo",
+        "hex": "#F2C200"
+      },
+      "medidas_mm": "600×460",
+      "unidad": "UN",
+      "precio_unit": 53.4
+    },
+    {
+      "codigo": "480626",
+      "linea": "escolar-pp-fnde",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo escolar cinza claro em PP",
+      "descripcion_es": "Tampo escolar gris claro en PP",
+      "color": {
+        "pt": "CINZA CLARO",
+        "es": "gris claro",
+        "hex": "#C9CDD2"
+      },
+      "medidas_mm": "600×460",
+      "unidad": "UN",
+      "precio_unit": 53.4
+    },
+    {
+      "codigo": "1360",
+      "linea": "escolar-pp-fnde",
+      "tipo": "accesorio",
+      "descripcion_pt": "Trava para tampo de mesa",
+      "descripcion_es": "Traba para tampo de mesa",
+      "color": {
+        "pt": "PRETO",
+        "es": "negro",
+        "hex": "#1A1A1A"
+      },
+      "medidas_mm": "598×30×15",
+      "unidad": "UN",
+      "precio_unit": 3.1
+    },
+    {
+      "codigo": "81739",
+      "linea": "asiento-respaldo-infantil",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento/Encosto infantil amarelo",
+      "descripcion_es": "Asiento/Respaldo infantil amarillo",
+      "color": {
+        "pt": "AMARELO",
+        "es": "amarillo",
+        "hex": "#F2C200"
+      },
+      "medidas_mm": "Asiento 32,50×31,50 / Respaldo 32,50×16,80",
+      "unidad": "UN",
+      "precio_unit": 16.9
+    },
+    {
+      "codigo": "385564",
+      "linea": "asiento-respaldo-infantil",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento/Encosto infantil azul",
+      "descripcion_es": "Asiento/Respaldo infantil azul",
+      "color": {
+        "pt": "AZUL",
+        "es": "azul",
+        "hex": "#0B4C9E"
+      },
+      "medidas_mm": "Asiento 32,50×31,50 / Respaldo 32,50×16,80",
+      "unidad": "UN",
+      "precio_unit": 16.9
+    },
+    {
+      "codigo": "420230",
+      "linea": "asiento-respaldo-infantil",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento/Encosto infantil laranja",
+      "descripcion_es": "Asiento/Respaldo infantil naranja",
+      "color": {
+        "pt": "LARANJA",
+        "es": "naranja",
+        "hex": "#E8720C"
+      },
+      "medidas_mm": "Asiento 32,50×31,50 / Respaldo 32,50×16,80",
+      "unidad": "UN",
+      "precio_unit": 16.9
+    },
+    {
+      "codigo": "511082",
+      "linea": "asiento-respaldo-infantil",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento/Encosto infantil pink",
+      "descripcion_es": "Asiento/Respaldo infantil fucsia",
+      "color": {
+        "pt": "PINK",
+        "es": "fucsia",
+        "hex": "#E5006D"
+      },
+      "medidas_mm": "Asiento 32,50×31,50 / Respaldo 32,50×16,80",
+      "unidad": "UN",
+      "precio_unit": 16.9
+    },
+    {
+      "codigo": "684678",
+      "linea": "asiento-respaldo-infantil",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento/Encosto infantil rosa",
+      "descripcion_es": "Asiento/Respaldo infantil rosa",
+      "color": {
+        "pt": "ROSA",
+        "es": "rosa",
+        "hex": "#F291B8"
+      },
+      "medidas_mm": "Asiento 32,50×31,50 / Respaldo 32,50×16,80",
+      "unidad": "UN",
+      "precio_unit": 16.9
+    },
+    {
+      "codigo": "166315",
+      "linea": "asiento-respaldo-infantil",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento/Encosto infantil verde água",
+      "descripcion_es": "Asiento/Respaldo infantil verde agua",
+      "color": {
+        "pt": "VERDE ÁGUA",
+        "es": "verde agua",
+        "hex": "#7FD4C1"
+      },
+      "medidas_mm": "Asiento 32,50×31,50 / Respaldo 32,50×16,80",
+      "unidad": "UN",
+      "precio_unit": 16.9
+    },
+    {
+      "codigo": "338055",
+      "linea": "asiento-respaldo-infantil",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento/Encosto infantil verde bandeira",
+      "descripcion_es": "Asiento/Respaldo infantil verde bandera",
+      "color": {
+        "pt": "VERDE BANDEIRA",
+        "es": "verde bandera",
+        "hex": "#009045"
+      },
+      "medidas_mm": "Asiento 32,50×31,50 / Respaldo 32,50×16,80",
+      "unidad": "UN",
+      "precio_unit": 16.9
+    },
+    {
+      "codigo": "856395",
+      "linea": "asiento-respaldo-infantil",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento/Encosto infantil verde citrico",
+      "descripcion_es": "Asiento/Respaldo infantil verde cítrico",
+      "color": {
+        "pt": "VERDE CITRICO",
+        "es": "verde cítrico",
+        "hex": "#A6CE39"
+      },
+      "medidas_mm": "Asiento 32,50×31,50 / Respaldo 32,50×16,80",
+      "unidad": "UN",
+      "precio_unit": 16.9
+    },
+    {
+      "codigo": "710370",
+      "linea": "asiento-respaldo-infantil",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento/Encosto infantil vermelho",
+      "descripcion_es": "Asiento/Respaldo infantil rojo",
+      "color": {
+        "pt": "VERMELHO",
+        "es": "rojo",
+        "hex": "#C8102E"
+      },
+      "medidas_mm": "Asiento 32,50×31,50 / Respaldo 32,50×16,80",
+      "unidad": "UN",
+      "precio_unit": 16.9
+    },
+    {
+      "codigo": "125469",
+      "linea": "asiento-respaldo-infantil",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento/Encosto infantil branco",
+      "descripcion_es": "Asiento/Respaldo infantil blanco",
+      "color": {
+        "pt": "BRANCO",
+        "es": "blanco",
+        "hex": "#F0F0EC"
+      },
+      "medidas_mm": "Asiento 32,50×31,50 / Respaldo 32,50×16,80",
+      "unidad": "UN",
+      "precio_unit": 17.6
+    },
+    {
+      "codigo": "655470",
+      "linea": "asiento-respaldo-infantil",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento/Encosto infantil roxo",
+      "descripcion_es": "Asiento/Respaldo infantil violeta",
+      "color": {
+        "pt": "ROXO",
+        "es": "violeta",
+        "hex": "#6B2FA0"
+      },
+      "medidas_mm": "Asiento 32,50×31,50 / Respaldo 32,50×16,80",
+      "unidad": "UN",
+      "precio_unit": 16.9
+    },
+    {
+      "codigo": "489382",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Centro de mesa trapézio infantil amarelo",
+      "descripcion_es": "Centro de mesa trapecio infantil amarillo",
+      "color": {
+        "pt": "AMARELO",
+        "es": "amarillo",
+        "hex": "#F2C200"
+      },
+      "medidas_mm": "413×361",
+      "unidad": "UN",
+      "precio_unit": 16.8
+    },
+    {
+      "codigo": "827432",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Centro de mesa trapézio infantil azul fnde",
+      "descripcion_es": "Centro de mesa trapecio infantil azul FNDE",
+      "color": {
+        "pt": "AZUL FNDE",
+        "es": "azul FNDE",
+        "hex": "#0B4C9E"
+      },
+      "medidas_mm": "413×361",
+      "unidad": "UN",
+      "precio_unit": 16.8
+    },
+    {
+      "codigo": "906250",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Centro de mesa trapézio infantil cinza claro",
+      "descripcion_es": "Centro de mesa trapecio infantil gris claro",
+      "color": {
+        "pt": "CINZA CLARO",
+        "es": "gris claro",
+        "hex": "#C9CDD2"
+      },
+      "medidas_mm": "413×361",
+      "unidad": "UN",
+      "precio_unit": 16.8
+    },
+    {
+      "codigo": "144487",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo trapézio infantil amarelo",
+      "descripcion_es": "Tampo trapecio infantil amarillo",
+      "color": {
+        "pt": "AMARELO",
+        "es": "amarillo",
+        "hex": "#F2C200"
+      },
+      "medidas_mm": "575×357×204",
+      "unidad": "UN",
+      "precio_unit": 26.0
+    },
+    {
+      "codigo": "478793",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo trapézio infantil azul fnde",
+      "descripcion_es": "Tampo trapecio infantil azul FNDE",
+      "color": {
+        "pt": "AZUL FNDE",
+        "es": "azul FNDE",
+        "hex": "#0B4C9E"
+      },
+      "medidas_mm": "575×357×204",
+      "unidad": "UN",
+      "precio_unit": 26.0
+    },
+    {
+      "codigo": "206271",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo trapézio infantil laranja",
+      "descripcion_es": "Tampo trapecio infantil naranja",
+      "color": {
+        "pt": "LARANJA",
+        "es": "naranja",
+        "hex": "#E8720C"
+      },
+      "medidas_mm": "575×357×204",
+      "unidad": "UN",
+      "precio_unit": 26.0
+    },
+    {
+      "codigo": "992258",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo trapézio infantil pink",
+      "descripcion_es": "Tampo trapecio infantil fucsia",
+      "color": {
+        "pt": "PINK",
+        "es": "fucsia",
+        "hex": "#E5006D"
+      },
+      "medidas_mm": "575×357×204",
+      "unidad": "UN",
+      "precio_unit": 26.0
+    },
+    {
+      "codigo": "942322",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo trapézio infantil roxo",
+      "descripcion_es": "Tampo trapecio infantil violeta",
+      "color": {
+        "pt": "ROXO",
+        "es": "violeta",
+        "hex": "#6B2FA0"
+      },
+      "medidas_mm": "575×357×204",
+      "unidad": "UN",
+      "precio_unit": 26.0
+    },
+    {
+      "codigo": "793744",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo trapézio infantil verde água",
+      "descripcion_es": "Tampo trapecio infantil verde agua",
+      "color": {
+        "pt": "VERDE ÁGUA",
+        "es": "verde agua",
+        "hex": "#7FD4C1"
+      },
+      "medidas_mm": "575×357×204",
+      "unidad": "UN",
+      "precio_unit": 26.0
+    },
+    {
+      "codigo": "148934",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo trapézio infantil verde bandeira",
+      "descripcion_es": "Tampo trapecio infantil verde bandera",
+      "color": {
+        "pt": "VERDE BANDEIRA",
+        "es": "verde bandera",
+        "hex": "#009045"
+      },
+      "medidas_mm": "575×357×204",
+      "unidad": "UN",
+      "precio_unit": 26.0
+    },
+    {
+      "codigo": "400964",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo trapézio infantil verde cítrico",
+      "descripcion_es": "Tampo trapecio infantil verde cítrico",
+      "color": {
+        "pt": "VERDE CÍTRICO",
+        "es": "verde cítrico",
+        "hex": "#A6CE39"
+      },
+      "medidas_mm": "575×357×204",
+      "unidad": "UN",
+      "precio_unit": 26.0
+    },
+    {
+      "codigo": "302985",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo trapézio infantil vermelho",
+      "descripcion_es": "Tampo trapecio infantil rojo",
+      "color": {
+        "pt": "VERMELHO",
+        "es": "rojo",
+        "hex": "#C8102E"
+      },
+      "medidas_mm": "575×357×204",
+      "unidad": "UN",
+      "precio_unit": 26.0
+    },
+    {
+      "codigo": "568563",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Sub tampo trapézio infantil amarelo",
+      "descripcion_es": "Sub tampo trapecio infantil amarillo",
+      "color": {
+        "pt": "AMARELO",
+        "es": "amarillo",
+        "hex": "#F2C200"
+      },
+      "medidas_mm": "471×240×236",
+      "unidad": "UN",
+      "precio_unit": 12.6
+    },
+    {
+      "codigo": "496282",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Sub tampo trapézio infantil azul fnde",
+      "descripcion_es": "Sub tampo trapecio infantil azul FNDE",
+      "color": {
+        "pt": "AZUL FNDE",
+        "es": "azul FNDE",
+        "hex": "#0B4C9E"
+      },
+      "medidas_mm": "471×240×236",
+      "unidad": "UN",
+      "precio_unit": 12.6
+    },
+    {
+      "codigo": "781198",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Sub tampo trapézio infantil laranja",
+      "descripcion_es": "Sub tampo trapecio infantil naranja",
+      "color": {
+        "pt": "LARANJA",
+        "es": "naranja",
+        "hex": "#E8720C"
+      },
+      "medidas_mm": "471×240×236",
+      "unidad": "UN",
+      "precio_unit": 12.6
+    },
+    {
+      "codigo": "52248",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Sub tampo trapézio infantil pink",
+      "descripcion_es": "Sub tampo trapecio infantil fucsia",
+      "color": {
+        "pt": "PINK",
+        "es": "fucsia",
+        "hex": "#E5006D"
+      },
+      "medidas_mm": "471×240×236",
+      "unidad": "UN",
+      "precio_unit": 12.6
+    },
+    {
+      "codigo": "992520",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Sub tampo trapézio infantil roxo",
+      "descripcion_es": "Sub tampo trapecio infantil violeta",
+      "color": {
+        "pt": "ROXO",
+        "es": "violeta",
+        "hex": "#6B2FA0"
+      },
+      "medidas_mm": "471×240×236",
+      "unidad": "UN",
+      "precio_unit": 12.6
+    },
+    {
+      "codigo": "764329",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Sub tampo trapézio infantil verde água",
+      "descripcion_es": "Sub tampo trapecio infantil verde agua",
+      "color": {
+        "pt": "VERDE ÁGUA",
+        "es": "verde agua",
+        "hex": "#7FD4C1"
+      },
+      "medidas_mm": "471×240×236",
+      "unidad": "UN",
+      "precio_unit": 12.6
+    },
+    {
+      "codigo": "61721",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Sub tampo trapézio infantil verde bandeira",
+      "descripcion_es": "Sub tampo trapecio infantil verde bandera",
+      "color": {
+        "pt": "VERDE BANDEIRA",
+        "es": "verde bandera",
+        "hex": "#009045"
+      },
+      "medidas_mm": "471×240×236",
+      "unidad": "UN",
+      "precio_unit": 12.6
+    },
+    {
+      "codigo": "369602",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Sub tampo trapézio infantil verde cítrico",
+      "descripcion_es": "Sub tampo trapecio infantil verde cítrico",
+      "color": {
+        "pt": "VERDE CÍTRICO",
+        "es": "verde cítrico",
+        "hex": "#A6CE39"
+      },
+      "medidas_mm": "471×240×236",
+      "unidad": "UN",
+      "precio_unit": 12.6
+    },
+    {
+      "codigo": "902613",
+      "linea": "trapecio-infantil",
+      "tipo": "tampo",
+      "descripcion_pt": "Sub tampo trapézio infantil vermelho",
+      "descripcion_es": "Sub tampo trapecio infantil rojo",
+      "color": {
+        "pt": "VERMELHO",
+        "es": "rojo",
+        "hex": "#C8102E"
+      },
+      "medidas_mm": "471×240×236",
+      "unidad": "UN",
+      "precio_unit": 12.6
+    },
+    {
+      "codigo": "639871",
+      "linea": "trapecio-juvenil",
+      "tipo": "tampo",
+      "descripcion_pt": "Centro de mesa trapézio juvenil amarelo",
+      "descripcion_es": "Centro de mesa trapecio juvenil amarillo",
+      "color": {
+        "pt": "AMARELO",
+        "es": "amarillo",
+        "hex": "#F2C200"
+      },
+      "medidas_mm": "430,50×493",
+      "unidad": "UN",
+      "precio_unit": 23.5
+    },
+    {
+      "codigo": "697445",
+      "linea": "trapecio-juvenil",
+      "tipo": "tampo",
+      "descripcion_pt": "Centro de mesa trapézio juvenil azul fnde",
+      "descripcion_es": "Centro de mesa trapecio juvenil azul FNDE",
+      "color": {
+        "pt": "AZUL FNDE",
+        "es": "azul FNDE",
+        "hex": "#0B4C9E"
+      },
+      "medidas_mm": "430,50×493",
+      "unidad": "UN",
+      "precio_unit": 23.5
+    },
+    {
+      "codigo": "754901",
+      "linea": "trapecio-juvenil",
+      "tipo": "tampo",
+      "descripcion_pt": "Centro de mesa trapézio juvenil verde bandeira",
+      "descripcion_es": "Centro de mesa trapecio juvenil verde bandera",
+      "color": {
+        "pt": "VERDE BANDEIRA",
+        "es": "verde bandera",
+        "hex": "#009045"
+      },
+      "medidas_mm": "430,50×493",
+      "unidad": "UN",
+      "precio_unit": 23.5
+    },
+    {
+      "codigo": "586077",
+      "linea": "trapecio-juvenil",
+      "tipo": "tampo",
+      "descripcion_pt": "Centro de mesa trapézio juvenil vermelho",
+      "descripcion_es": "Centro de mesa trapecio juvenil rojo",
+      "color": {
+        "pt": "VERMELHO",
+        "es": "rojo",
+        "hex": "#C8102E"
+      },
+      "medidas_mm": "430,50×493",
+      "unidad": "UN",
+      "precio_unit": 23.5
+    },
+    {
+      "codigo": "825349",
+      "linea": "trapecio-juvenil",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo trapézio juvenil amarelo",
+      "descripcion_es": "Tampo trapecio juvenil amarillo",
+      "color": {
+        "pt": "AMARELO",
+        "es": "amarillo",
+        "hex": "#F2C200"
+      },
+      "medidas_mm": "660×397×238",
+      "unidad": "UN",
+      "precio_unit": 34.6
+    },
+    {
+      "codigo": "597245",
+      "linea": "trapecio-juvenil",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo trapézio juvenil azul fnde",
+      "descripcion_es": "Tampo trapecio juvenil azul FNDE",
+      "color": {
+        "pt": "AZUL FNDE",
+        "es": "azul FNDE",
+        "hex": "#0B4C9E"
+      },
+      "medidas_mm": "660×397×238",
+      "unidad": "UN",
+      "precio_unit": 34.6
+    },
+    {
+      "codigo": "815378",
+      "linea": "trapecio-juvenil",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo trapézio juvenil laranja",
+      "descripcion_es": "Tampo trapecio juvenil naranja",
+      "color": {
+        "pt": "LARANJA",
+        "es": "naranja",
+        "hex": "#E8720C"
+      },
+      "medidas_mm": "660×397×238",
+      "unidad": "UN",
+      "precio_unit": 34.6
+    },
+    {
+      "codigo": "831432",
+      "linea": "trapecio-juvenil",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo trapézio juvenil rosa",
+      "descripcion_es": "Tampo trapecio juvenil rosa",
+      "color": {
+        "pt": "ROSA",
+        "es": "rosa",
+        "hex": "#F291B8"
+      },
+      "medidas_mm": "660×397×238",
+      "unidad": "UN",
+      "precio_unit": 34.6
+    },
+    {
+      "codigo": "510084",
+      "linea": "trapecio-juvenil",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo trapézio juvenil verde bandeira",
+      "descripcion_es": "Tampo trapecio juvenil verde bandera",
+      "color": {
+        "pt": "VERDE BANDEIRA",
+        "es": "verde bandera",
+        "hex": "#009045"
+      },
+      "medidas_mm": "660×397×238",
+      "unidad": "UN",
+      "precio_unit": 34.6
+    },
+    {
+      "codigo": "295580",
+      "linea": "trapecio-juvenil",
+      "tipo": "tampo",
+      "descripcion_pt": "Tampo trapézio juvenil vermelho",
+      "descripcion_es": "Tampo trapecio juvenil rojo",
+      "color": {
+        "pt": "VERMELHO",
+        "es": "rojo",
+        "hex": "#C8102E"
+      },
+      "medidas_mm": "660×397×238",
+      "unidad": "UN",
+      "precio_unit": 34.6
+    },
+    {
+      "codigo": "360",
+      "linea": "iso-pratice",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto ISO amarelo",
+      "descripcion_es": "Asiento y respaldo ISO amarillo",
+      "color": {
+        "pt": "AMARELO",
+        "es": "amarillo",
+        "hex": "#F2C200"
+      },
+      "medidas_mm": "Asiento 455×410 / Respaldo 445×287",
+      "unidad": "UN",
+      "precio_unit": 31.4
+    },
+    {
+      "codigo": "446",
+      "linea": "iso-pratice",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto ISO laranja",
+      "descripcion_es": "Asiento y respaldo ISO naranja",
+      "color": {
+        "pt": "LARANJA",
+        "es": "naranja",
+        "hex": "#E8720C"
+      },
+      "medidas_mm": "Asiento 455×410 / Respaldo 445×287",
+      "unidad": "UN",
+      "precio_unit": 31.4
+    },
+    {
+      "codigo": "589",
+      "linea": "iso-pratice",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto ISO pink",
+      "descripcion_es": "Asiento y respaldo ISO fucsia",
+      "color": {
+        "pt": "PINK",
+        "es": "fucsia",
+        "hex": "#E5006D"
+      },
+      "medidas_mm": "Asiento 455×410 / Respaldo 445×287",
+      "unidad": "UN",
+      "precio_unit": 32.6
+    },
+    {
+      "codigo": "448",
+      "linea": "iso-pratice",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto ISO vermelho",
+      "descripcion_es": "Asiento y respaldo ISO rojo",
+      "color": {
+        "pt": "VERMELHO",
+        "es": "rojo",
+        "hex": "#C8102E"
+      },
+      "medidas_mm": "Asiento 455×410 / Respaldo 445×287",
+      "unidad": "UN",
+      "precio_unit": 31.4
+    },
+    {
+      "codigo": "362",
+      "linea": "iso-pratice",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto ISO verde citrico",
+      "descripcion_es": "Asiento y respaldo ISO verde cítrico",
+      "color": {
+        "pt": "VERDE CITRICO",
+        "es": "verde cítrico",
+        "hex": "#A6CE39"
+      },
+      "medidas_mm": "Asiento 455×410 / Respaldo 445×287",
+      "unidad": "UN",
+      "precio_unit": 31.4
+    },
+    {
+      "codigo": "447",
+      "linea": "iso-pratice",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto ISO verde bandeira",
+      "descripcion_es": "Asiento y respaldo ISO verde bandera",
+      "color": {
+        "pt": "VERDE BANDEIRA",
+        "es": "verde bandera",
+        "hex": "#009045"
+      },
+      "medidas_mm": "Asiento 455×410 / Respaldo 445×287",
+      "unidad": "UN",
+      "precio_unit": 31.4
+    },
+    {
+      "codigo": "444",
+      "linea": "iso-pratice",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto ISO azul royal",
+      "descripcion_es": "Asiento y respaldo ISO azul royal",
+      "color": {
+        "pt": "AZUL ROYAL",
+        "es": "azul royal",
+        "hex": "#123E9C"
+      },
+      "medidas_mm": "Asiento 455×410 / Respaldo 445×287",
+      "unidad": "UN",
+      "precio_unit": 31.4
+    },
+    {
+      "codigo": "566",
+      "linea": "iso-pratice",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto ISO marrom",
+      "descripcion_es": "Asiento y respaldo ISO marrón",
+      "color": {
+        "pt": "MARROM",
+        "es": "marrón",
+        "hex": "#6B4A2F"
+      },
+      "medidas_mm": "Asiento 455×410 / Respaldo 445×287",
+      "unidad": "UN",
+      "precio_unit": 31.4
+    },
+    {
+      "codigo": "441",
+      "linea": "iso-pratice",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto ISO preto",
+      "descripcion_es": "Asiento y respaldo ISO negro",
+      "color": {
+        "pt": "PRETO",
+        "es": "negro",
+        "hex": "#1A1A1A"
+      },
+      "medidas_mm": "Asiento 455×410 / Respaldo 445×287",
+      "unidad": "UN",
+      "precio_unit": 22.8
+    },
+    {
+      "codigo": "439",
+      "linea": "iso-pratice",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto ISO branco",
+      "descripcion_es": "Asiento y respaldo ISO blanco",
+      "color": {
+        "pt": "BRANCO",
+        "es": "blanco",
+        "hex": "#F0F0EC"
+      },
+      "medidas_mm": "Asiento 455×410 / Respaldo 445×287",
+      "unidad": "UN",
+      "precio_unit": 32.9
+    },
+    {
+      "codigo": "469",
+      "linea": "iso-pratice",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto ISO cinza",
+      "descripcion_es": "Asiento y respaldo ISO gris",
+      "color": {
+        "pt": "CINZA",
+        "es": "gris",
+        "hex": "#9AA0A6"
+      },
+      "medidas_mm": "Asiento 455×410 / Respaldo 445×287",
+      "unidad": "UN",
+      "precio_unit": 31.4
+    },
+    {
+      "codigo": "797",
+      "linea": "iso-pratice",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto ISO bege",
+      "descripcion_es": "Asiento y respaldo ISO beige",
+      "color": {
+        "pt": "BEGE",
+        "es": "beige",
+        "hex": "#D9C9A8"
+      },
+      "medidas_mm": "Asiento 455×410 / Respaldo 445×287",
+      "unidad": "UN",
+      "precio_unit": 31.4
+    },
+    {
+      "codigo": "2598",
+      "linea": "iso-pratice",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto ISO verde água",
+      "descripcion_es": "Asiento y respaldo ISO verde agua",
+      "color": {
+        "pt": "VERDE ÁGUA",
+        "es": "verde agua",
+        "hex": "#7FD4C1"
+      },
+      "medidas_mm": "Asiento 455×410 / Respaldo 445×287",
+      "unidad": "UN",
+      "precio_unit": 31.4
+    },
+    {
+      "codigo": "2929",
+      "linea": "sb-oriplast",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto SB amarelo",
+      "descripcion_es": "Asiento y respaldo SB amarillo",
+      "color": {
+        "pt": "AMARELO",
+        "es": "amarillo",
+        "hex": "#F2C200"
+      },
+      "medidas_mm": "Respaldo 425×368 / Asiento 433×413",
+      "unidad": "UN",
+      "precio_unit": 36.4
+    },
+    {
+      "codigo": "2930",
+      "linea": "sb-oriplast",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto SB laranja",
+      "descripcion_es": "Asiento y respaldo SB naranja",
+      "color": {
+        "pt": "LARANJA",
+        "es": "naranja",
+        "hex": "#E8720C"
+      },
+      "medidas_mm": "Respaldo 425×368 / Asiento 433×413",
+      "unidad": "UN",
+      "precio_unit": 36.4
+    },
+    {
+      "codigo": "2931",
+      "linea": "sb-oriplast",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto SB vermelho",
+      "descripcion_es": "Asiento y respaldo SB rojo",
+      "color": {
+        "pt": "VERMELHO",
+        "es": "rojo",
+        "hex": "#C8102E"
+      },
+      "medidas_mm": "Respaldo 425×368 / Asiento 433×413",
+      "unidad": "UN",
+      "precio_unit": 36.4
+    },
+    {
+      "codigo": "2928",
+      "linea": "sb-oriplast",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto SB verde citrico",
+      "descripcion_es": "Asiento y respaldo SB verde cítrico",
+      "color": {
+        "pt": "VERDE CITRICO",
+        "es": "verde cítrico",
+        "hex": "#A6CE39"
+      },
+      "medidas_mm": "Respaldo 425×368 / Asiento 433×413",
+      "unidad": "UN",
+      "precio_unit": 36.4
+    },
+    {
+      "codigo": "2923",
+      "linea": "sb-oriplast",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto SB verde bandeira",
+      "descripcion_es": "Asiento y respaldo SB verde bandera",
+      "color": {
+        "pt": "VERDE BANDEIRA",
+        "es": "verde bandera",
+        "hex": "#009045"
+      },
+      "medidas_mm": "Respaldo 425×368 / Asiento 433×413",
+      "unidad": "UN",
+      "precio_unit": 36.4
+    },
+    {
+      "codigo": "2922",
+      "linea": "sb-oriplast",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto SB azul royal",
+      "descripcion_es": "Asiento y respaldo SB azul royal",
+      "color": {
+        "pt": "AZUL ROYAL",
+        "es": "azul royal",
+        "hex": "#123E9C"
+      },
+      "medidas_mm": "Respaldo 425×368 / Asiento 433×413",
+      "unidad": "UN",
+      "precio_unit": 36.4
+    },
+    {
+      "codigo": "2924",
+      "linea": "sb-oriplast",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto SB marrom",
+      "descripcion_es": "Asiento y respaldo SB marrón",
+      "color": {
+        "pt": "MARROM",
+        "es": "marrón",
+        "hex": "#6B4A2F"
+      },
+      "medidas_mm": "Respaldo 425×368 / Asiento 433×413",
+      "unidad": "UN",
+      "precio_unit": 36.4
+    },
+    {
+      "codigo": "2921",
+      "linea": "sb-oriplast",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto SB preto",
+      "descripcion_es": "Asiento y respaldo SB negro",
+      "color": {
+        "pt": "PRETO",
+        "es": "negro",
+        "hex": "#1A1A1A"
+      },
+      "medidas_mm": "Respaldo 425×368 / Asiento 433×413",
+      "unidad": "UN",
+      "precio_unit": 31.2
+    },
+    {
+      "codigo": "2927",
+      "linea": "sb-oriplast",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto SB branco",
+      "descripcion_es": "Asiento y respaldo SB blanco",
+      "color": {
+        "pt": "BRANCO",
+        "es": "blanco",
+        "hex": "#F0F0EC"
+      },
+      "medidas_mm": "Respaldo 425×368 / Asiento 433×413",
+      "unidad": "UN",
+      "precio_unit": 37.8
+    },
+    {
+      "codigo": "2925",
+      "linea": "sb-oriplast",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto SB cinza",
+      "descripcion_es": "Asiento y respaldo SB gris",
+      "color": {
+        "pt": "CINZA",
+        "es": "gris",
+        "hex": "#9AA0A6"
+      },
+      "medidas_mm": "Respaldo 425×368 / Asiento 433×413",
+      "unidad": "UN",
+      "precio_unit": 36.4
+    },
+    {
+      "codigo": "2926",
+      "linea": "sb-oriplast",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto SB bege",
+      "descripcion_es": "Asiento y respaldo SB beige",
+      "color": {
+        "pt": "BEGE",
+        "es": "beige",
+        "hex": "#D9C9A8"
+      },
+      "medidas_mm": "Respaldo 425×368 / Asiento 433×413",
+      "unidad": "UN",
+      "precio_unit": 36.4
+    },
+    {
+      "codigo": "2937",
+      "linea": "sb-oriplast",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto SB verde água",
+      "descripcion_es": "Asiento y respaldo SB verde agua",
+      "color": {
+        "pt": "VERDE ÁGUA",
+        "es": "verde agua",
+        "hex": "#7FD4C1"
+      },
+      "medidas_mm": "Respaldo 425×368 / Asiento 433×413",
+      "unidad": "UN",
+      "precio_unit": 36.4
+    },
+    {
+      "codigo": "656070",
+      "linea": "sb-oriplast",
+      "tipo": "asiento-respaldo",
+      "descripcion_pt": "Assento e encosto SB verde oliva",
+      "descripcion_es": "Asiento y respaldo SB verde oliva",
+      "color": {
+        "pt": "VERDE OLIVA",
+        "es": "verde oliva",
+        "hex": "#6B7B3A"
+      },
+      "medidas_mm": "Respaldo 425×368 / Asiento 433×413",
+      "unidad": "UN",
+      "precio_unit": 36.4
+    }
+  ],
+  "hash_items": "c4ece306dbecabcb"
+}

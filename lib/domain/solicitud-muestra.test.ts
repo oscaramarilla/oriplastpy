@@ -1,5 +1,5 @@
 import assert from "assert";
-import { PRODUCT_CATALOG } from "../config/solicitud-muestra";
+import { PRODUCT_CATALOG } from "../config/solicitud-muestra.ts";
 import {
   buildSolicitudSummary,
   countDigits,
@@ -7,7 +7,7 @@ import {
   validateSelectedProducts,
   validateSolicitud,
   type SolicitudMuestra,
-} from "./solicitud-muestra";
+} from "./solicitud-muestra.ts";
 
 function runTests() {
   testIsValidEmail();

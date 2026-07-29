@@ -42,9 +42,9 @@ export default function HomeB2B() {
               <a href="#catalogo" className="bg-lime-400 text-black px-6 py-3 rounded-full font-bold hover:bg-white transition">
                 Ver Componentes
               </a>
-              <a href="https://wa.me/TUSWAPP" className="bg-transparent border border-white text-white px-6 py-3 rounded-full font-bold hover:bg-gray-800 transition">
+              <Link href="/cotizador" className="bg-transparent border border-white text-white px-6 py-3 rounded-full font-bold hover:bg-gray-800 transition">
                 Cotizar Proyecto
-              </a>
+              </Link>
             </div>
           </div>
           <div className="w-48 md:w-64">
@@ -193,9 +193,9 @@ export default function HomeB2B() {
                <li className="flex items-center gap-2"><span className="text-lime-400">✔</span> Mejor estructura para cotización</li>
                <li className="flex items-center gap-2"><span className="text-lime-400">✔</span> Enfoque comercial para producción</li>
             </ul>
-            <a href="https://wa.me/TUSWAPP" className="inline-block mt-8 bg-lime-400 text-black px-6 py-3 rounded-full font-bold hover:bg-white transition w-full text-center">
-               Contactar Asesor B2B
-            </a>
+            <Link href="/cotizador" className="inline-block mt-8 bg-lime-400 text-black px-6 py-3 rounded-full font-bold hover:bg-white transition w-full text-center">
+               Cotizar Proyecto B2B
+            </Link>
           </section>
 
         </div>
