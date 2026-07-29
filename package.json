@@ -2,11 +2,15 @@
   "name": "oriplast-site",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
+    "prebuild": "npm run precios:validar",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "precios:validar": "node --experimental-strip-types scripts/validar-precios.ts",
+    "test": "node --test --experimental-strip-types \"lib/**/*.test.ts\""
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

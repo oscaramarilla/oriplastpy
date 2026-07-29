@@ -58,8 +58,8 @@ export default function ProductLines() {
                   <div key={j} className="bg-white p-6 rounded-2xl border border-gray-100 hover:border-lime-200 hover:shadow-lg transition-all group">
                     <h4 className="font-bold text-gray-900 mb-2">{p.nombre}</h4>
                     <p className="text-sm text-gray-500 mb-4">{p.desc}</p>
-                    <Link 
-                      href={`/cotizar?producto=${p.nombre.toLowerCase().replace(/ /g, '-')}`} 
+                    <Link
+                      href={`/cotizador?producto=${p.nombre.toLowerCase().replace(/ /g, '-')}`}
                       className="text-sm font-bold text-lime-600 flex items-center gap-2 group-hover:gap-3 transition-all"
                     >
                       Cotizar lote <span>→</span>
